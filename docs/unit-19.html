@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單元 19 · ASPICE × ISO 26262 整合實務 · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="兩套規範在一個專案中怎麼走：對照矩陣與雙軌 V-model。">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>單元 19 · ASPICE × ISO 26262 整合實務</h1>
+  <p class="subtitle">對照矩陣、雙軌流程、分工與交付物</p>
+</header>
+<nav class="topnav">  <a href="../index.html">首頁</a>
+  <a href="../map.html">概念地圖</a>
+  <a href="../learning-path.html">學習路線</a>
+  <a href="../docs/index.html">單元教學</a>
+  <a href="../glossary.html">術語表</a>
+  <a href="../processes.html">過程速查</a>
+  <a href="../standards.html">標準對照</a>
+  <a href="../about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 單元教學</a></div>
+<div class="guide">
+<h2>19.1 為什麼要整合</h2>
+<p>車廠往往<strong>同時要求</strong> ISO 26262 合規與 ASPICE 評鑑。若不整合，團隊會做「兩套流程、兩份文件、兩次稽核」——重工且容易不一致。</p>
+<div class="callout"><strong>核心原則：</strong>兩套規範高度重疊。用<strong>同一份 V-model</strong>，讓安全要求與流程活動共用同一批交付物與證據。</div>
+
+<h2>19.2 對照矩陣</h2>
+<table>
+<tr><th>ASPICE 過程</th><th>ISO 26262 對應</th><th>共用交付物</th></tr>
+<tr><td>SYS.1–SYS.2</td><td>Part 3/4（Item、需求）</td><td>需求規格（含 TSR）</td></tr>
+<tr><td>SYS.3</td><td>Part 4（系統設計）</td><td>系統架構設計</td></tr>
+<tr><td>SWE.1</td><td>Part 6（軟體安全需求）</td><td>軟體需求規格（含 ASIL）</td></tr>
+<tr><td>SWE.2</td><td>Part 6（軟體架構）</td><td>架構設計（含分區）</td></tr>
+<tr><td>SWE.3</td><td>Part 6（實作）</td><td>詳細設計＋程式碼</td></tr>
+<tr><td>SWE.4–6</td><td>Part 6（驗證）</td><td>測試計畫/報告＋覆蓋率</td></tr>
+<tr><td>SUP.8–10</td><td>Part 8（CM/變更/問題）</td><td>基線、CR、PR 追蹤</td></tr>
+<tr><td>MAN.3</td><td>Part 2（安全計畫）</td><td>專案＋安全計畫</td></tr>
+</table>
+
+<h2>19.3 整合的實務做法</h2>
+<ol>
+<li><strong>共用需求庫</strong>：系統/軟體/安全需求放同一套工具。</li>
+<li><strong>共用追蹤</strong>：追溯矩陣同時滿足「ASPICE 雙向追溯」與「ISO 需求鏈」。</li>
+<li><strong>共用測試</strong>：SWE.4–6 的測試報告同時是「ASPICE 證據」與「ISO 驗證證據」。</li>
+<li><strong>一套評審</strong>：聯合評審（SUP.4）與確認措施合併排程。</li>
+</ol>
+<div class="callout warn"><strong>注意：</strong>整合 ≠ 合併成一套。ISO 26262 的安全屬性（ASIL、安全機制、安全案例）仍是額外要求，ASPICE 評鑑員仍會看過程能力。整合是把「重疊的」共用，「獨有的」並存。</div>
+
+<h2>19.4 Worked Example：雙軌里程碑</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>里程碑 M4（架構完成）：
+  安全軌：SWE.2 + 安全架構評審（確認措施 I2）✓
+  流程軌：SYS.3/SWE.2 證據齊全（進評鑑抽樣）✓
+  共用：架構圖一份、追溯矩陣一份
+  稽核話術：用同一份架構文件回答「架構怎麼分層？」
+           （ASPICE）與「怎麼避免干擾？」（ISO）
+</pre></div>
+<p>動手：做出你專案的對照矩陣（ASPICE 過程 × ISO 活動 × 交付物），找出一份文件能被兩邊共用的項目。</p>
+
+  <div class="outcome">
+    <strong>看完這單元你應該能說出：</strong>
+    <ul><li>建立 ISO 26262 × ASPICE 對照矩陣。</li><li>規劃雙軌 V-model 的里程碑與交付物。</li><li>說明兩個流程如何共用同一套證據。</li></ul>
+  </div>
+
+  <h2>延伸閱讀</h2>
+  <ul>
+<li>上一篇：<a href="unit-18.html">單元 18 · 功能安全流程管理</a>。</li><li>下一篇：<a href="unit-20.html">單元 20 · 全流程 Worked Example</a>。</li><li><a href="../processes.html">過程速查</a></li>
+  </ul>
+
+<div class="next-prev">
+    <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
+    <a class="np-next" href="unit-20.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 20 · 完整 Worked Example：從 HARA 到 SWE.6</div></a>
+</div>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>

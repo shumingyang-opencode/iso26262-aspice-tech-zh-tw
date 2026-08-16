@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單元 6 · SYS 過程群：SYS.1–SYS.3 · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="ASPICE 系統層三大過程，含系統需求規格與架構圖範例。">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>單元 6 · SYS 過程群：SYS.1–SYS.3</h1>
+  <p class="subtitle">需求擷取、系統需求分析、系統架構設計</p>
+</header>
+<nav class="topnav">  <a href="../index.html">首頁</a>
+  <a href="../map.html">概念地圖</a>
+  <a href="../learning-path.html">學習路線</a>
+  <a href="../docs/index.html">單元教學</a>
+  <a href="../glossary.html">術語表</a>
+  <a href="../processes.html">過程速查</a>
+  <a href="../standards.html">標準對照</a>
+  <a href="../about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 單元教學</a></div>
+<div class="guide">
+<h2>6.1 系統層的三大過程</h2>
+<p>ASPICE 系統層（SYS）把「利害關係人需求」逐步變成「可驗證的系統」：</p>
+<table>
+<tr><th>過程</th><th>輸入</th><th>輸出</th><th>關鍵活動</th></tr>
+<tr><td><strong>SYS.1</strong> 需求擷取</td><td>客戶/法規/內部</td><td>利害關係人需求</td><td>蒐集、分類、優先序</td></tr>
+<tr><td><strong>SYS.2</strong> 系統需求分析</td><td>利害關係人需求</td><td>系統需求規格</td><td>技術化、驗收準則</td></tr>
+<tr><td><strong>SYS.3</strong> 系統架構設計</td><td>系統需求</td><td>系統架構設計</td><td>分解、介面、分配</td></tr>
+</table>
+<div class="callout"><strong>與 ISO 26262 對應：</strong>SYS.1–SYS.3 大致對應 Part 3 概念階段與 Part 4 系統層開發的前段。安全需求（TSR）就在這一層被定義與分配。</div>
+
+<h2>6.2 SYS.1 需求擷取：蒐集「利害關係人」的聲音</h2>
+<ul>
+<li>來源：客戶規格、法規（如 FMVSS/E-NCAP/UN R79）、市場回饋、內部經驗。</li>
+<li>分類：功能性、非功能性（效能、安全、資安、法規）。</li>
+<li>屬性：來源、優先序、可驗證性、衝突。</li>
+</ul>
+<div class="demo-block"><div class="demo-label">範例</div><pre>利害關係人需求 SR-01（客戶）
+「車輛應在市區低速時提供自動緊急煞車，避免碰撞靜止物。」
+  → 優先序：高 ｜ 來源：OEM 規格 ｜ 法規：E-NCAP AEB 評分項目
+</pre></div>
+
+<h2>6.3 SYS.2 系統需求分析：把需求「技術化」</h2>
+<ul>
+<li>把利害關係人需求翻成<strong>技術可實現</strong>的系統需求。</li>
+<li>每條需求附<strong>驗收準則</strong>（可測量、可測試）。</li>
+<li>與 ISO 26262 的 <strong>TSR</strong> 整合在同一份規格中。</li>
+</ul>
+<div class="demo-block"><div class="demo-label">範例</div><pre>系統需求 SYSR-01 ｜來源 SR-01
+「AEB 須在市區（車速 5–50 km/h）偵測前方 3–30 m 的靜止/移動
+ 物體（行人、車輛），並於 TTC &lt; 1.2 s 時輸出煞車請求。」
+
+驗收準則：在 HIL 上以 80 個場景測試，行人偵測率 ≥ 99%，
+          誤觸發率 ≤ 0.1%；見測試案例 TC-SYSR-01-01…80。
+</pre></div>
+
+<h2>6.4 SYS.3 系統架構設計：把需求「分配」</h2>
+<ul>
+<li>把系統拆成<strong>元件</strong>（感測器、ECU、致動器、通訊）。</li>
+<li>定義<strong>介面</strong>與<strong>資料流</strong>。</li>
+<li>把每條系統需求<strong>分配</strong>給元件；安全需求標記 ASIL。</li>
+</ul>
+<div class="pipe"><span class="step">雷達模組</span><span class="arr">→</span><span class="step">CAN</span><span class="arr">→</span><span class="step">AEB ECU</span><span class="arr">→</span><span class="step">CAN</span><span class="arr">→</span><span class="step">煞車致動器</span></div>
+<div class="callout info"><strong>安全架構重點：</strong>把高 ASIL 需求分配到「具備足夠隔離」的元件（見單元 9 的 freedom from interference）；低 ASIL 元件不應拖累高 ASIL 元件。</div>
+
+<h2>6.5 Worked Example：系統需求 → 架構分配</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>SYSR-01（AEB 偵測煞車）分配：
+  雷達模組   → 偵測與距離量測（ASIL C(D)）
+  AEB ECU    → TTC 判定、安全決策（ASIL D）
+  煞車致動器 → 執行減速（ASIL D）
+  CAN 匯流排 → 訊息完整性（CRC、計數器；防偽訊）
+
+介面契約：目標清單物件格式（固定 32 位元組 frame）
+         雷達心跳 50 ms；ECU 監控逾時 → 進入安全狀態。
+</pre></div>
+<p>動手：為你的系統畫一張架構圖，並把 3 條系統需求分配給元件。</p>
+
+  <div class="outcome">
+    <strong>看完這單元你應該能說出：</strong>
+    <ul><li>說明 SYS.1 需求擷取與 SYS.2 系統需求分析的差異。</li><li>產出系統需求規格與驗收準則。</li><li>在系統架構設計中引入安全機制。</li></ul>
+  </div>
+
+  <h2>延伸閱讀</h2>
+  <ul>
+<li>上一篇：<a href="unit-05.html">單元 5 · 安全目標與安全需求</a>。</li><li>下一篇：<a href="unit-07.html">單元 7 · SYS.4/SYS.5</a>。</li><li><a href="../processes.html">過程速查</a></li>
+  </ul>
+
+<div class="next-prev">
+    <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
+    <a class="np-next" href="unit-07.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 7 · SYS.4 / SYS.5：系統整合與資格測試</div></a>
+</div>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單元 14 · 硬體層 Part 5 與軟硬體相依 · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="硬體層開發重點與軟體/硬體相依的設計考量。">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>單元 14 · 硬體層 Part 5 與軟硬體相依</h1>
+  <p class="subtitle">硬體安全需求、FMEDA、隨機硬體失效</p>
+</header>
+<nav class="topnav">  <a href="../index.html">首頁</a>
+  <a href="../map.html">概念地圖</a>
+  <a href="../learning-path.html">學習路線</a>
+  <a href="../docs/index.html">單元教學</a>
+  <a href="../glossary.html">術語表</a>
+  <a href="../processes.html">過程速查</a>
+  <a href="../standards.html">標準對照</a>
+  <a href="../about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 單元教學</a></div>
+<div class="guide">
+<h2>14.1 硬體層在做什麼</h2>
+<p><strong>ISO 26262 Part 5 硬體層開發</strong>：把 TSR 中分配給硬體的部分變成<strong>硬體安全需求</strong>、硬體設計、硬體驗證，並用<strong>量化分析</strong>證明隨機硬體失效風險可接受。</p>
+<div class="callout"><strong>軟體工程師要懂它：</strong>硬體失效（記憶體位元翻轉、感測器故障）正是軟體要偵測與應對的對象——安全機制常常是「軟體 + 硬體」合作。</div>
+
+<h2>14.2 兩種失效來源</h2>
+<table>
+<tr><th>類型</th><th>成因</th><th>處理方式</th></tr>
+<tr><td><strong>系統性失效</strong></td><td>設計/製程/規格錯誤</td><td>流程（ISO 26262 Part 6/8）+ 測試</td></tr>
+<tr><td><strong>隨機硬體失效</strong></td><td>物理劣化、輻射等隨機事件</td><td>量化分析（FMEDA）+ 安全機制</td></tr>
+</table>
+
+<h2>14.3 量化指標</h2>
+<table>
+<tr><th>指標</th><th>含義</th><th>ASIL D 參考</th></tr>
+<tr><td><strong>PMHF</strong></td><td>平均每小時失效機率</td><td>&lt; 10⁻⁸ /h</td></tr>
+<tr><td><strong>SPFM</strong></td><td>單點失效度量</td><td>&gt; 99%</td></tr>
+<tr><td><strong>LFM</strong></td><td>潛在失效度量</td><td>&gt; 90%</td></tr>
+</table>
+<p>這些指標用 <strong>FMEDA</strong>（失效模式、影響與診斷分析）估算：對每個元件列出失效模式、影響、是否被安全機制診斷、殘餘風險。</p>
+
+<h2>14.4 FMEDA 摘要範例</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>元件：微控制器 RAM（ASIL D）
+失效模式      → 影響            → 安全機制        → 診斷率
+單一 bit 翻轉  → 資料錯誤        → ECC 校正        → 99%
+雙 bit 翻轉    → 不可校正錯誤    → 錯誤中斷→安全狀態 → 98%
+位址解碼失效   → 錯誤寫入        → 記憶體保護檢查    → 95%
+
+合計：PMHF 達標（&lt;10⁻⁸/h）＋ SPFM/LFM 達標
+</pre></div>
+
+<h2>14.5 軟硬體相依設計考量</h2>
+<ul>
+<li><strong>自我測試（BIST）</strong>：開機時測 RAM/ROM/CPU。</li>
+<li><strong>診斷介面</strong>：軟體讀取硬體診斷暫存器。</li>
+<li><strong>錯誤中斷</strong>：ECC 錯誤、Watchdog 逾時 → 軟體進安全狀態。</li>
+<li><strong>時序預算</strong>：硬體自測試時間要算進啟動與 FTTI。</li>
+</ul>
+<div class="callout info"><strong>Part 11（半導體指南）</strong>：半導體元件的功能安全應用指引——失效率、誤差、熱等考量，供 IC 供應商使用。</div>
+
+<h2>14.6 Worked Example：一個硬體故障的軟體反應</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>情境：AEB ECU 的 RAM 發生 ECC 不可校正錯誤（UE）
+硬體：產生不可遮罩中斷（NMI）→ 觸發安全狀態請求
+軟體：NMI handler 在 50ms 內執行：
+      1. 凍結輸出（煞車請求維持安全值）
+      2. 記錄錯誤碼與上下文
+      3. 進入有限安全模式（警示駕駛）
+驗證：故障注入測試（強制 UE）證明 NMI→安全狀態 ≤50ms
+</pre></div>
+<p>動手：列舉你系統中「軟體必須應對的 3 個硬體故障」，各配一個偵測與反應。</p>
+
+  <div class="outcome">
+    <strong>看完這單元你應該能說出：</strong>
+    <ul><li>說明硬體層開發（Part 5）的主要活動。</li><li>解釋 FMEDA 與隨機硬體失效的量化指標。</li><li>描述軟體/硬體相依的設計考量。</li></ul>
+  </div>
+
+  <h2>延伸閱讀</h2>
+  <ul>
+<li>上一篇：<a href="unit-13.html">單元 13 · SWE.6</a>。</li><li>下一篇：<a href="unit-15.html">單元 15 · 安全分析</a>。</li><li><a href="../standards.html">標準對照</a></li>
+  </ul>
+
+<div class="next-prev">
+    <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
+    <a class="np-next" href="unit-15.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 15 · 安全分析：FMEA、FTA、DFA</div></a>
+</div>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>

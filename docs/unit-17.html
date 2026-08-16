@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單元 17 · 品質保證與管理：SUP.1/SUP.4/MAN.3/MAN.6 · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="品質保證、評審與專案管理流程，含評鑑實務。">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>單元 17 · 品質保證與管理：SUP.1/SUP.4/MAN.3/MAN.6</h1>
+  <p class="subtitle">QA 計畫、聯合評審、專案管理、測量</p>
+</header>
+<nav class="topnav">  <a href="../index.html">首頁</a>
+  <a href="../map.html">概念地圖</a>
+  <a href="../learning-path.html">學習路線</a>
+  <a href="../docs/index.html">單元教學</a>
+  <a href="../glossary.html">術語表</a>
+  <a href="../processes.html">過程速查</a>
+  <a href="../standards.html">標準對照</a>
+  <a href="../about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 單元教學</a></div>
+<div class="guide">
+<h2>17.1 品質保證（SUP.1）</h2>
+<p><strong>SUP.1 品質保證</strong>：獨立檢視「過程是否有照規定執行」，產出<strong>不符合項</strong>並追蹤。它不是替開發者把關產品品質，而是<strong>確保流程被遵守</strong>。</p>
+<div class="callout"><strong>角色定位：</strong>QA 與開發是「警察 vs 執行者」。QA 要<strong>獨立於專案團隊</strong>才可信。</div>
+<ul>
+<li><strong>QA 計畫</strong>：檢視對象、時程、準則。</li>
+<li><strong>檢查項目</strong>：流程符合、交付物齊全、紀錄一致。</li>
+<li><strong>證據</strong>：檢查表、不符合項單、追蹤狀態。</li>
+</ul>
+<div class="demo-block"><div class="demo-label">範例</div><pre>QA 檢查（週期：每雙週）：
+  Q 1 需求變更是否有 CR 批准？       → 符合
+  Q 2 SWE.4 測試報告是否齊全？       → 不符（缺 2 份）→ 開 NCR-07
+  Q 3 基線標籤與需求庫是否對應？     → 符合
+追蹤：NCR-07 於一週內補齊並驗證。
+</pre></div>
+
+<h2>17.2 聯合評審（SUP.4）</h2>
+<ul>
+<li><strong>對象</strong>：重大交付物（需求、設計、測試計畫、報告）。</li>
+<li><strong>參與</strong>：供應商與客戶雙方。</li>
+<li><strong>產出</strong>：評審紀錄、問題清單、批准。</li>
+</ul>
+<div class="callout info"><strong>評審 vs 測試：</strong>評審在「執行前」抓問題（成本最低），測試在「執行後」抓。ASPICE 重視兩者並存。</div>
+
+<h2>17.3 MAN.3 專案管理</h2>
+<ul>
+<li>範圍、時程、資源、成本、風險。</li>
+<li>里程碑與<strong>品質指標</strong>（如缺陷密度、測試通過率）。</li>
+<li>與<strong>安全計畫</strong>（ISO 26262 Part 2）對齊。</li>
+</ul>
+<div class="demo-block"><div class="demo-label">範例</div><pre>里程碑 M3（SWE.4 完成）狀態：
+  完成度：100%｜通過率：96.2%
+  風險：資格測試環境尚未到位（影響 SWE.6）→ 升溫為 R-3
+  措施：提早與客戶排 HIL 時段。
+</pre></div>
+
+<h2>17.4 MAN.6 測量</h2>
+<ul>
+<li><strong>量測什麼</strong>：缺陷數、覆蓋率、需求追溯完成率、時程偏差。</li>
+<li><strong>用途</strong>：預測品質、及早發現風險、證明過程「可預測」（CL4 基礎）。</li>
+</ul>
+<div class="callout warn"><strong>常見錯誤：</strong>量一堆數字但沒人看。測量要<strong>連結決策</strong>——每個指標都要回答一個管理問題。</div>
+
+<h2>17.5 Worked Example：一頁 QA 儀表板</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>專案 AEB｜2026-08-16
+需求追溯完成率  98%   （缺：2 條 SWR 未對應測試）← 紅
+單元測試通過率  96.2%
+覆蓋率（語句/分支） 100% / 95%（分支目標 100%）← 黃
+缺陷密度（/KLOC） 0.8    （目標 ≤ 1.0）✓
+未關閉問題單    3      （1 高 2 中）← 追蹤
+→ 管理行動：紅/黃項各指派負責人，下週復查。
+</pre></div>
+<p>動手：設計你專案的 5 個品質指標與各自閾值。</p>
+
+  <div class="outcome">
+    <strong>看完這單元你應該能說出：</strong>
+    <ul><li>說明 SUP.1 品質保證的角色與證據。</li><li>描述 SUP.4 聯合評審的進行方式。</li><li>解釋 MAN.3 專案管理與 MAN.6 測量的重點。</li></ul>
+  </div>
+
+  <h2>延伸閱讀</h2>
+  <ul>
+<li>上一篇：<a href="unit-16.html">單元 16 · SUP.8-10</a>。</li><li>下一篇：<a href="unit-18.html">單元 18 · 功能安全流程管理</a>。</li><li><a href="../processes.html">過程速查</a></li>
+  </ul>
+
+<div class="next-prev">
+    <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
+    <a class="np-next" href="unit-18.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 18 · 功能安全流程管理：Part 2/8</div></a>
+</div>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>

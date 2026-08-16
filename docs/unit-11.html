@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單元 11 · SWE.4 軟體單元驗證 · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="單元驗證策略：靜態分析 + 單元測試 + 覆蓋率門檻，含測試用例。">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>單元 11 · SWE.4 軟體單元驗證</h1>
+  <p class="subtitle">靜態分析、單元測試、覆蓋率</p>
+</header>
+<nav class="topnav">  <a href="../index.html">首頁</a>
+  <a href="../map.html">概念地圖</a>
+  <a href="../learning-path.html">學習路線</a>
+  <a href="../docs/index.html">單元教學</a>
+  <a href="../glossary.html">術語表</a>
+  <a href="../processes.html">過程速查</a>
+  <a href="../standards.html">標準對照</a>
+  <a href="../about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 單元教學</a></div>
+<div class="guide">
+<h2>11.1 SWE.4 在做什麼</h2>
+<p><strong>SWE.4 軟體單元驗證</strong>：證明每個<strong>單元</strong>（函式/模組）符合其詳細設計。方法：<strong>靜態分析</strong>（不執行）+ <strong>動態測試</strong>（執行）+ <strong>覆蓋率</strong>。</p>
+<div class="callout"><strong>對應 ISO 26262：</strong>Part 6 依 ASIL 規定單元驗證的「方法強度」，含測試方法與覆蓋率門檻。</div>
+
+<h2>11.2 單元驗證方法（依 ASIL）</h2>
+<table>
+<tr><th>方法</th><th>ASIL A</th><th>B</th><th>C</th><th>D</th></tr>
+<tr><td>靜態分析（規則/工具）</td><td>＋</td><td>＋</td><td>＋＋</td><td>＋＋</td></tr>
+<tr><td>需求式單元測試</td><td>＋</td><td>＋</td><td>＋＋</td><td>＋＋</td></tr>
+<tr><td>背靠背測試</td><td>＋</td><td>＋</td><td>＋</td><td>＋＋</td></tr>
+<tr><td>故障注入（單元層）</td><td>＋</td><td>＋</td><td>＋</td><td>＋＋</td></tr>
+</table>
+<p><strong>＋</strong> = 建議；<strong>＋＋</strong> = 高度建議（ASIL 越高越嚴格）。</p>
+
+<h2>11.3 覆蓋率標準</h2>
+<table>
+<tr><th>覆蓋率</th><th>意義</th><th>門檻建議</th></tr>
+<tr><td>語句（Statement）</td><td>每行程式都執行過</td><td>ASIL A/B：100%</td></tr>
+<tr><td>分支（Branch）</td><td>每個判斷的兩個方向都走過</td><td>ASIL C：100%</td></tr>
+<tr><td>MC/DC</td><td>每個布林條件獨立影響結果</td><td>ASIL D：100%</td></tr>
+</table>
+<div class="callout warn"><strong>陷阱：</strong>100% 覆蓋率 ≠ 程式沒 bug——它只證明「走過的路沒爆」。所以要「覆蓋率 + 需求式用例」並用。</div>
+
+<h2>11.4 單元測試用例設計</h2>
+<ul>
+<li><strong>正常案例</strong>：典型輸入。</li>
+<li><strong>邊界案例</strong>：最大值/最小值、0、負數。</li>
+<li><strong>異常輸入</strong>：NULL、越界、非法組合。</li>
+<li><strong>每條 SWR 都有對應用例</strong>（追溯）。</li>
+</ul>
+<div class="demo-block"><div class="demo-label">範例 UT</div><pre>UT-011｜TTC_Calculator｜來源 SWR-AEB-011
+  輸入：dist=30.0, vrel=25.0
+  期望：ttc_ms=1200, valid=true；誤差 ≤ 2ms
+
+UT-012｜邊界｜vrel=1.0（靜止判定邊界）
+  期望：valid=false, ttc_ms=0
+
+UT-013｜異常｜dist=250.0（超出 200）→ 回傳 false
+
+UT-014｜異常｜傳入 NULL 指標 → 回傳 false，不崩潰
+</pre></div>
+
+<h2>11.5 工具與流程</h2>
+<ul>
+<li><strong>靜態分析</strong>：Polyspace、Cppcheck、Clang-Tidy。</li>
+<li><strong>單元測試框架</strong>：Unity、Ceedling、GoogleTest（C++）。</li>
+<li><strong>覆蓋率</strong>：gcov/lcov、BullseyeCoverage。</li>
+<li><strong>CI</strong>：每次 commit 自動跑，結果入庫當證據。</li>
+</ul>
+<div class="callout"><strong>證據是關鍵：</strong>ASPICE 稽核要的是<strong>測試報告 + 覆蓋率報表 + 需求追溯</strong>，不是「我們測過了」一句話。</div>
+
+<h2>11.6 Worked Example：覆蓋率驅動補測</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>對 TTC_Calculator 跑 UT-011~014 後，gcov 顯示：
+  語句覆蓋率 92%、分支覆蓋率 75%
+
+缺口：vrel &lt; 1.0 分支只測了邊界 1.0（vrel=1.0 未進 if）
+  補 UT-015：vrel=0.5 → valid=false
+  補 UT-016：vrel=1.0 精確值 → 依規格判定
+
+重跑後：語句 100%、分支 100%（ASIL D 需 MC/DC，再補真值表）
+</pre></div>
+<p>動手：為你的某個函式寫 5 個單元測試，並用覆蓋率工具找出漏測分支。</p>
+
+  <div class="outcome">
+    <strong>看完這單元你應該能說出：</strong>
+    <ul><li>規劃單元驗證策略（靜態分析 + 單元測試）。</li><li>撰寫單元測試用例並執行覆蓋率分析。</li><li>依 ASIL 選擇覆蓋率標準（語句/分支/MC/DC）。</li></ul>
+  </div>
+
+  <h2>延伸閱讀</h2>
+  <ul>
+<li>上一篇：<a href="unit-10.html">單元 10 · SWE.3</a>。</li><li>下一篇：<a href="unit-12.html">單元 12 · SWE.5</a>。</li><li><a href="../glossary.html">術語表</a></li>
+  </ul>
+
+<div class="next-prev">
+    <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
+    <a class="np-next" href="unit-12.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 12 · SWE.5 軟體整合與整合測試</div></a>
+</div>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>

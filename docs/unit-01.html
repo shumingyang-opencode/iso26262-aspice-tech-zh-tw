@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單元 1 · 概論：為什麼汽車需要 ISO 26262 與 ASPICE · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="汽車電子軟體為何要「照規範做」：V-model 與兩套規範的分工。">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>單元 1 · 概論：為什麼汽車需要 ISO 26262 與 ASPICE</h1>
+  <p class="subtitle">V-model、風險×流程雙主軸、兩套規範的關係</p>
+</header>
+<nav class="topnav">  <a href="../index.html">首頁</a>
+  <a href="../map.html">概念地圖</a>
+  <a href="../learning-path.html">學習路線</a>
+  <a href="../docs/index.html">單元教學</a>
+  <a href="../glossary.html">術語表</a>
+  <a href="../processes.html">過程速查</a>
+  <a href="../standards.html">標準對照</a>
+  <a href="../about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 單元教學</a></div>
+<div class="guide">
+<h2>1.1 為什麼汽車軟體特別要求「照規範做」</h2>
+<p>手機 App 出 bug 會閃退，<strong>車上的 bug 可能造成人身傷害</strong>。汽車電子（引擎控制、煞車、轉向、ADAS）一旦失效，後果不是「重新開機」而是「事故」。這讓車用軟體有了兩層要求：</p>
+<table>
+<tr><th>層次</th><th>回答的問題</th><th>對應規範</th></tr>
+<tr><td><strong>功能安全</strong></td><td>系統失效時是否安全？風險多高、要做到多安全？</td><td>ISO 26262</td></tr>
+<tr><td><strong>過程能力</strong></td><td>團隊是否「有能力」把軟體做好？每個階段有沒有做對？</td><td>ASPICE</td></tr>
+</table>
+<div class="callout"><strong>核心觀念：</strong>ISO 26262 管「<strong>做出來的東西安不安全</strong>」，ASPICE 管「<strong>團隊有沒有能力把它做好</strong>」。前者是產品面，後者是過程面。</div>
+
+<h2>1.2 V-model：兩套規範的共同骨架</h2>
+<div class="pipe"><span class="step">需求</span><span class="arr">→</span><span class="step">系統設計</span><span class="arr">→</span><span class="step">架構</span><span class="arr">→</span><span class="step">單元實作</span><span class="arr">→</span><span class="step">單元測試</span><span class="arr">→</span><span class="step">整合測試</span><span class="arr">→</span><span class="step">系統驗證</span></div>
+<p>V-model 的左邊是<strong>逐步向下分解</strong>（需求 → 設計 → 實作），右邊是<strong>逐層向上驗證</strong>（單元測試 → 整合 → 系統驗證）。每一層都有對應的規格與驗證活動：</p>
+<table>
+<tr><th>V 的位置</th><th>ISO 26262</th><th>ASPICE</th></tr>
+<tr><td>概念/需求</td><td>Part 3（概念）、Part 4（系統需求）</td><td>SYS.1–SYS.2、SWE.1</td></tr>
+<tr><td>設計</td><td>Part 4/5/6（系統/硬體/軟體設計）</td><td>SYS.3、SWE.2–SWE.3</td></tr>
+<tr><td>實作</td><td>Part 6（軟體實作）</td><td>SWE.3</td></tr>
+<tr><td>驗證</td><td>Part 4/6（整合與驗證）</td><td>SWE.4–SWE.6、SYS.4–SYS.5</td></tr>
+<tr><td>管理</td><td>Part 2/8（安全與支持流程）</td><td>SUP、MAN</td></tr>
+</table>
+
+<h2>1.3 兩套規範的分工與互補</h2>
+<ul>
+<li><strong>ISO 26262 是「裁量」規範</strong>：依 ASIL 決定「要做多嚴格」（例如 ASIL D 才要求 MC/DC 覆蓋率）。</li>
+<li><strong>ASPICE 是「能力」規範</strong>：不管風險高低，都要證明過程有能力（CL2 要求管理化、CL3 要求制度化）。</li>
+<li><strong>實務上互補</strong>：車廠常要求「ASPICE CL2–3 + ISO 26262 合規」同時達標。ASPICE 提供流程骨架，ISO 26262 在骨架上加入安全要求。</li>
+</ul>
+<div class="callout warn"><strong>職業守則：</strong>「我們寫的程式很安全」不算數——要有 HARA、有安全需求、有測試證據。車廠稽核看的是<strong>交付物</strong>，不是口頭保證。</div>
+
+<h2>1.4 Worked Example：一個煞車控制專案的雙軌開始</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>專案：煞車輔助系統（Brake Assist）
+├── 安全軌（ISO 26262）
+│   └── 目標：ASIL C，需完成 HARA → 安全目標 → TSR
+├── 流程軌（ASPICE）
+│   └── 目標：CL2，需完成 SYS.1→SWE.6 全過程交付物
+└── 兩者共用
+    └── V-model 時間軸、同一份需求庫、同一套測試結果
+</pre></div>
+<p>動手：找一個你手邊的車用/安全相關專案，把它拆成「安全軌」與「流程軌」兩欄，各寫出要交付的第一個文件。</p>
+
+<h2>1.5 常見迷思</h2>
+<ul>
+<li><strong>「ASPICE 就是文件作業」</strong>——錯。文件只是證據，目的是證明過程有能力、需求可追溯。</li>
+<li><strong>「ISO 26262 只跟硬體有關」</strong>——錯。Part 6 整套都是軟體要求，軟體占比很高。</li>
+<li><strong>「做到 ASIL D 就萬事 OK」</strong>——錯。ASIL 只定義「多嚴格」，流程照不照做（ASPICE）另算。</li>
+</ul>
+
+  <div class="outcome">
+    <strong>看完這單元你應該能說出：</strong>
+    <ul><li>說出為什麼車用軟體需要同時看「安全」與「流程」。</li><li>畫出 V-model 並指出 ISO 26262 與 ASPICE 各自對應的位置。</li><li>舉例說明 ISO 26262 與 ASPICE 的分工與互補關係。</li></ul>
+  </div>
+
+  <h2>延伸閱讀</h2>
+  <ul>
+<li>下一篇：<a href="unit-02.html">單元 2 · ISO 26262 全景</a>。</li><li><a href="../standards.html">標準對照</a>：先看 12 parts 一覽。</li><li><a href="../glossary.html">術語表</a></li>
+  </ul>
+
+<div class="next-prev">
+    <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
+    <a class="np-next" href="unit-02.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 2 · ISO 26262 全景：12 parts 總覽</div></a>
+</div>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>

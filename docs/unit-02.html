@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單元 2 · ISO 26262 全景：12 parts 總覽 · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="ISO 26262 的 12 個 part 各自管什麼，與全站術語地圖。">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>單元 2 · ISO 26262 全景：12 parts 總覽</h1>
+  <p class="subtitle">功能安全家族、ASIL、安全生命周期、關鍵術語</p>
+</header>
+<nav class="topnav">  <a href="../index.html">首頁</a>
+  <a href="../map.html">概念地圖</a>
+  <a href="../learning-path.html">學習路線</a>
+  <a href="../docs/index.html">單元教學</a>
+  <a href="../glossary.html">術語表</a>
+  <a href="../processes.html">過程速查</a>
+  <a href="../standards.html">標準對照</a>
+  <a href="../about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 單元教學</a></div>
+<div class="guide">
+<h2>2.1 ISO 26262 是什麼</h2>
+<p><strong>ISO 26262「道路車輛—功能安全」</strong>（Road vehicles — Functional safety）是針對量產道路車輛（含機電/電子系統）的功能安全標準。核心精神：<strong>把風險降低到「可接受」的程度，並用證據證明</strong>。</p>
+<div class="callout"><strong>關鍵：</strong>ISO 26262 管的是<strong>因系統失效（含隨機硬體失效與系統性失效）造成的不合理風險</strong>。它不管純機械磨損、也不管網路安全（那是 ISO/SAE 21434）。</div>
+
+<h2>2.2 12 parts 一覽</h2>
+<table>
+<tr><th>Part</th><th>主題</th><th>一句話重點</th></tr>
+<tr><td>1</td><td>詞彙</td><td>術語與定義</td></tr>
+<tr><td>2</td><td>功能安全管理</td><td>安全計畫、確認、安全案例</td></tr>
+<tr><td>3</td><td>概念階段</td><td>Item 定義、HARA、安全目標</td></tr>
+<tr><td>4</td><td>系統層開發</td><td>TSR、系統設計與驗證</td></tr>
+<tr><td>5</td><td>硬體層開發</td><td>硬體需求、FMEDA</td></tr>
+<tr><td>6</td><td>軟體層開發</td><td>軟體需求到驗證</td></tr>
+<tr><td>7</td><td>生產與營運</td><td>生產、操作、維護</td></tr>
+<tr><td>8</td><td>支持過程</td><td>CM、變更、驗證、信任度</td></tr>
+<tr><td>9</td><td>ASIL 導向分析</td><td>分解、FMEA、FTA、DFA</td></tr>
+<tr><td>10</td><td>指南</td><td>應用指引</td></tr>
+<tr><td>11</td><td>半導體指南</td><td>半導體元件指引</td></tr>
+<tr><td>12</td><td>摩托車適用</td><td>摩托車領域調整</td></tr>
+</table>
+<p><strong>背誦口訣</strong>：2 管理、3 概念、4 系統、5 硬體、6 軟體、7 生產、8 支持、9 分析、10–12 是指引。</p>
+
+<h2>2.3 安全生命週期（Safety Lifecycle）</h2>
+<div class="pipe"><span class="step">概念</span><span class="arr">→</span><span class="step">系統開發</span><span class="arr">→</span><span class="step">硬體/軟體開發</span><span class="arr">→</span><span class="step">生產/營運</span><span class="arr">→</span><span class="step">維護/報廢</span></div>
+<ul>
+<li><strong>概念階段</strong>（Part 3）：定義 Item、做 HARA、訂安全目標。</li>
+<li><strong>開發階段</strong>（Part 4/5/6）：系統、硬體、軟體三層同時推進。</li>
+<li><strong>生產與營運</strong>（Part 7）：確保量產與使用階段的車仍安全。</li>
+</ul>
+<div class="callout info"><strong>重點：</strong>安全生命週期不是一次性活動——維修/改版都要回到生命周期重新評估。</div>
+
+<h2>2.4 ASIL：功能安全的「強度表」</h2>
+<p><strong>ASIL</strong>（Automotive Safety Integrity Level，汽車安全完整性等級）由 HARA 的 S/E/C 三項評級決定（詳見單元 4）。四級由低到高：</p>
+<table>
+<tr><th>等級</th><th>含義</th><th>示意</th></tr>
+<tr><td>QM</td><td>一般品質管理即可</td><td>音響、導航（無安全需求）</td></tr>
+<tr><td>ASIL A</td><td>輕度</td><td>尾燈亮度異常</td></tr>
+<tr><td>ASIL B</td><td>中度</td><td>儀錶警示延遲</td></tr>
+<tr><td>ASIL C</td><td>高度</td><td>煞車輔助失效</td></tr>
+<tr><td>ASIL D</td><td>最高</td><td>主動轉向失效</td></tr>
+</table>
+<div class="callout warn"><strong>實務陷阱：</strong>ASIL 越高，要求的「證明強度」越高（覆蓋率、獨立性、安全機制冗餘）。不要只把 ASIL 當「標籤」，它直接決定工作量。</div>
+
+<h2>2.5 Worked Example：一個安全目標怎麼寫</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>安全目標 SG-01（ASIL C）
+「在單點煞車控制失效時，車輛應在 500 ms 內進入安全狀態
+ （可控制減速至停止），且不造成無意的加速。」
+
+來源：HARA-03（煞車失效情境，S3/E3/C1 → ASIL C）
+驗證方式：故障注入測試 + 時序量測（≤ FTTI 500 ms）
+</pre></div>
+<p>動手：把你所在領域最嚴重的失效情境，寫成一個安全目標（含來源與驗證方式）。</p>
+
+  <div class="outcome">
+    <strong>看完這單元你應該能說出：</strong>
+    <ul><li>說出 ISO 26262 的 12 個 parts 各自管什麼。</li><li>畫出安全生命週期的主要階段。</li><li>解釋 ASIL 的用途與四個等級。</li></ul>
+  </div>
+
+  <h2>延伸閱讀</h2>
+  <ul>
+<li>上一篇：<a href="unit-01.html">單元 1 · 概論</a>。</li><li>下一篇：<a href="unit-03.html">單元 3 · ASPICE 全景</a>。</li><li><a href="../standards.html">標準對照</a></li>
+  </ul>
+
+<div class="next-prev">
+    <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
+    <a class="np-next" href="unit-03.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 3 · ASPICE 全景：過程群組與能力等級</div></a>
+</div>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>

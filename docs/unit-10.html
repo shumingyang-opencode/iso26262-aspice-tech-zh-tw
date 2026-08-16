@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單元 10 · SWE.3 詳細設計與單元建置 · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="把單元設計落到程式碼：編碼規範、防禦式設計與程式碼範例。">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>單元 10 · SWE.3 詳細設計與單元建置</h1>
+  <p class="subtitle">詳細設計文件、MISRA C、defensive programming</p>
+</header>
+<nav class="topnav">  <a href="../index.html">首頁</a>
+  <a href="../map.html">概念地圖</a>
+  <a href="../learning-path.html">學習路線</a>
+  <a href="../docs/index.html">單元教學</a>
+  <a href="../glossary.html">術語表</a>
+  <a href="../processes.html">過程速查</a>
+  <a href="../standards.html">標準對照</a>
+  <a href="../about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 單元教學</a></div>
+<div class="guide">
+<h2>10.1 SWE.3 在做什麼</h2>
+<p><strong>SWE.3 軟體詳細設計與單元建置</strong>：把架構元件細化成<strong>單元（Unit）</strong>的詳細設計，再用程式碼實作。交付物：<strong>詳細設計文件</strong> + <strong>可編譯、可測試的程式碼</strong>。</p>
+<div class="callout"><strong>對應 ISO 26262：</strong>Part 6 對軟體實作要求<strong>編碼規範</strong>、<strong>可理解性</strong>、<strong>可測試性</strong>與<strong>防禦式設計</strong>。</div>
+
+<h2>10.2 詳細設計的內容</h2>
+<ul>
+<li>每個單元的<strong>介面</strong>（輸入/輸出、全域資料）。</li>
+<li><strong>演算法</strong>與<strong>資料結構</strong>。</li>
+<li><strong>狀態機</strong>（若有）。</li>
+<li><strong>與架構的對應</strong>（追溯）。</li>
+</ul>
+<div class="demo-block"><div class="demo-label">範例</div><pre>單元：TTC_Calculator
+介面：
+  輸入：obj_dist_m（float32）、obj_vrel_mps（float32）
+  輸出：ttc_ms（uint32）、valid（bool）
+行為：ttc = dist / vrel；vrel &lt; 1 m/s 時視為靜止，
+      設定 valid=false（不輸出 TTC）。
+</pre></div>
+
+<h2>10.3 編碼規範：MISRA C 一瞥</h2>
+<p><strong>MISRA C</strong> 是車用 C 語言的編碼規範，用來減少系統性錯誤。常用規則：</p>
+<table>
+<tr><th>規則類型</th><th>例子</th></tr>
+<tr><td>型別安全</td><td>禁止隱含轉型（如 int→uint32 未檢查）</td></tr>
+<tr><td>控制流</td><td>禁止 goto、禁止 fall-through</td></tr>
+<tr><td>表達式</td><td>禁止副作用與未定義行為</td></tr>
+<tr><td>指標</td><td>禁止多重指標（部分設定）</td></tr>
+</table>
+<div class="demo-block"><div class="demo-label">MISRA 對照</div><pre>// 不良：隱含轉型 + 未檢查除數
+ttc_ms = (uint32_t)(dist / vrel);
+
+// 改善：檢查除數 + 明確轉型
+if (vrel < 1.0f) {
+    ttc_ms = 0u;
+    valid  = false;
+} else {
+    ttc_ms = (uint32_t)((dist / vrel) * 1000.0f);
+    valid  = true;
+}
+</pre></div>
+
+<h2>10.4 防禦式程式設計</h2>
+<ul>
+<li><strong>輸入驗證</strong>：所有外部輸入先檢查範圍。</li>
+<li><strong>除數/索引檢查</strong>：避免除以零與越界。</li>
+<li><strong>錯誤回報</strong>：不回傳「神祕數值」，用明確錯誤碼。</li>
+<li><strong>讓它容易失敗</strong>：遇到未知狀態 → 進安全狀態。</li>
+</ul>
+<div class="callout warn"><strong>實務陷阱：</strong>防禦式設計會增加程式碼，需用<strong>靜態分析工具</strong>（如 Polyspace、Cppcheck）輔助，並在 SWE.4 用測試證明。</div>
+
+<h2>10.5 Worked Example：完整單元</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>// ttc_calculator.c（ASIL D）
+bool ttc_calc(float dist, float vrel, uint32_t* ttc_ms, bool* valid) {
+    if (ttc_ms == NULL || valid == NULL) return false;
+    if (dist  < 0.0f || dist > 200.0f)   return false;
+    if (vrel  < 0.0f || vrel > 100.0f)   return false;
+    if (vrel < 1.0f) {                    // 靜止物體
+        *ttc_ms = 0u; *valid = false; return true;
+    }
+    *ttc_ms = (uint32_t)((dist / vrel) * 1000.0f);
+    *valid  = true;
+    return true;
+}
+// 對應 SWR-AEB-011；SWE.4 需 UT 覆蓋（見單元 11）
+</pre></div>
+<p>動手：挑一個你程式中的函式，用 MISRA 風格 + 防禦式設計重寫，並列出你用的規則。</p>
+
+  <div class="outcome">
+    <strong>看完這單元你應該能說出：</strong>
+    <ul><li>撰寫軟體詳細設計（單元層級）。</li><li>套用編碼規範（MISRA C）與防禦式設計。</li><li>列出 SWE.3 的常見交付物與檢查點。</li></ul>
+  </div>
+
+  <h2>延伸閱讀</h2>
+  <ul>
+<li>上一篇：<a href="unit-09.html">單元 9 · SWE.2</a>。</li><li>下一篇：<a href="unit-11.html">單元 11 · SWE.4</a>。</li><li><a href="../glossary.html">術語表</a></li>
+  </ul>
+
+<div class="next-prev">
+    <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
+    <a class="np-next" href="unit-11.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 11 · SWE.4 軟體單元驗證</div></a>
+</div>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>

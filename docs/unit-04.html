@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單元 4 · 概念階段：Item 定義與 HARA · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="Step-by-step 做一次 HARA：ADAS 雷達場景完整 Worked Example。">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>單元 4 · 概念階段：Item 定義與 HARA</h1>
+  <p class="subtitle">危害分析與風險評估、S/E/C 評級、ASIL 決定</p>
+</header>
+<nav class="topnav">  <a href="../index.html">首頁</a>
+  <a href="../map.html">概念地圖</a>
+  <a href="../learning-path.html">學習路線</a>
+  <a href="../docs/index.html">單元教學</a>
+  <a href="../glossary.html">術語表</a>
+  <a href="../processes.html">過程速查</a>
+  <a href="../standards.html">標準對照</a>
+  <a href="../about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 單元教學</a></div>
+<div class="guide">
+<h2>4.1 HARA 是什麼</h2>
+<p><strong>HARA</strong>（Hazard Analysis and Risk Assessment，危害分析與風險評估）是 ISO 26262 概念階段的核心活動，目的：找出 Item 在<strong>使用情境</strong>下的危害事件，評估風險，決定每個危害的 <strong>ASIL</strong>，並訂出<strong>安全目標</strong>。</p>
+<div class="callout"><strong>關鍵：</strong>HARA 評估的是「<strong>情境</strong>」不是「元件」。同樣一個煞車失效，在高速公路（S3）與停車場（S1）風險完全不同。</div>
+
+<h2>4.2 五個步驟</h2>
+<ol>
+<li><strong>Item 定義</strong>：界定分析對象的功能、邊界、介面、依賴。</li>
+<li><strong>情境分析</strong>：列出「功能/異常 → 駕駛情境 → 潛在危害」。</li>
+<li><strong>危害事件</strong>：把危害 + 情境組合成可評估的事件。</li>
+<li><strong>風險評級</strong>：對每個危害事件給 S/E/C。</li>
+<li><strong>ASIL 決定 + 安全目標</strong>：查表得 ASIL，寫安全目標。</li>
+</ol>
+
+<h2>4.3 S/E/C 三項評級</h2>
+<table>
+<tr><th>參數</th><th>等級</th><th>說明</th></tr>
+<tr><td rowspan="4"><strong>S</strong> Severity<br>嚴重度</td><td>S0</td><td>無傷害</td></tr>
+<tr><td>S1</td><td>輕傷（可治療）</td></tr>
+<tr><td>S2</td><td>重傷（可能致死）</td></tr>
+<tr><td>S3</td><td>致命/多重致命</td></tr>
+<tr><td rowspan="5"><strong>E</strong> Exposure<br>暴露率</td><td>E0</td><td>極不可能</td></tr>
+<tr><td>E1</td><td>非常低</td></tr>
+<tr><td>E2</td><td>低</td></tr>
+<tr><td>E3</td><td>中（10%–1% 行駛時間）</td></tr>
+<tr><td>E4</td><td>高（&gt;1% 行駛時間）</td></tr>
+<tr><td rowspan="4"><strong>C</strong> Controllability<br>可控性</td><td>C0</td><td>可完全控制</td></tr>
+<tr><td>C1</td><td>一般可控制</td></tr>
+<tr><td>C2</td><td>可部分控制</td></tr>
+<tr><td>C3</td><td>難以控制</td></tr>
+</table>
+
+<h2>4.4 ASIL 決定表</h2>
+<table>
+<tr><th>嚴重度</th><th>暴露率</th><th>C1</th><th>C2</th><th>C3</th></tr>
+<tr><td rowspan="4">S1</td><td>E1</td><td>QM</td><td>QM</td><td>QM</td></tr>
+<tr><td>E2</td><td>QM</td><td>QM</td><td>QM</td></tr>
+<tr><td>E3</td><td>QM</td><td>QM</td><td>ASIL A</td></tr>
+<tr><td>E4</td><td>QM</td><td>ASIL A</td><td>ASIL B</td></tr>
+<tr><td rowspan="4">S2</td><td>E1</td><td>QM</td><td>QM</td><td>QM</td></tr>
+<tr><td>E2</td><td>QM</td><td>ASIL A</td><td>ASIL B</td></tr>
+<tr><td>E3</td><td>ASIL A</td><td>ASIL B</td><td>ASIL C</td></tr>
+<tr><td>E4</td><td>ASIL B</td><td>ASIL C</td><td>ASIL C</td></tr>
+<tr><td rowspan="4">S3</td><td>E1</td><td>QM</td><td>ASIL A</td><td>ASIL B</td></tr>
+<tr><td>E2</td><td>ASIL A</td><td>ASIL B</td><td>ASIL C</td></tr>
+<tr><td>E3</td><td>ASIL B</td><td>ASIL C</td><td>ASIL D</td></tr>
+<tr><td>E4</td><td>ASIL C</td><td>ASIL D</td><td>ASIL D</td></tr>
+</table>
+<div class="callout info"><strong>記憶：</strong>S3 + 高暴露 + 低可控 → ASIL D。這是車控類（煞車、轉向）常見的結果。</div>
+
+<h2>4.5 Worked Example：ADAS 雷達 AEB 的 HARA</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>Item：自動緊急煞車（AEB）系統
+
+步驟1 Item 定義：以雷達偵測前方障礙，判定碰撞風險時自動煞車。
+功能邊界：感知（雷達）→ 決策（ECU）→ 執行（煞車致動）。
+
+步驟2 危害情境：
+H-01 雷達盲區未偵測到行人 → 車輛未煞車 → 行人被撞
+H-02 誤偵測障礙 → 車輛急煞 → 後車追撞
+H-03 失效時發出煞車命令但致動失敗 → 未減速
+
+步驟3 風險評級（取 H-01 為主）：
+情境：市區路口，AEB 需在行人穿越時作動（E4，時常發生）
+若失效未煞車：行人身亡（S3）
+駕駛無法及時接管（C2，突發狀況）
+
+步驟4 ASIL：
+S3 × E4 × C2 → 查表 = ASIL D
+
+步驟5 安全目標：
+SG-AEB-01（ASIL D）：偵測到行人碰撞風險時，系統必須在 300 ms
+內執行至少 0.6 g 的煞車減速，且不得因單一感測器故障而延遲。
+
+驗證：HIL 場景庫 + 故障注入（雷達離線）+ 實車計時。
+</pre></div>
+<p>動手：為你自己的專案（或車燈/雨刷/車門這類系統）做一次簡化 HARA，至少 3 個危害事件。</p>
+
+<h2>4.6 練習</h2>
+<ol>
+<li>為什麼同樣失效，E 值不同 ASIL 會不同？</li>
+<li>S1/E4/C3 得什麼 ASIL？（答案：ASIL B）</li>
+<li>安全目標為什麼要寫「驗證方式」？</li>
+</ol>
+
+  <div class="outcome">
+    <strong>看完這單元你應該能說出：</strong>
+    <ul><li>定義 Item 與危害情境。</li><li>用 S/E/C 三項評級執行 HARA 並決定 ASIL。</li><li>產出安全目標並指定驗證方式。</li></ul>
+  </div>
+
+  <h2>延伸閱讀</h2>
+  <ul>
+<li>上一篇：<a href="unit-03.html">單元 3 · ASPICE 全景</a>。</li><li>下一篇：<a href="unit-05.html">單元 5 · 安全目標與安全需求</a>。</li><li><a href="../glossary.html">術語表</a></li>
+  </ul>
+
+<div class="next-prev">
+    <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
+    <a class="np-next" href="unit-05.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 5 · 安全目標與安全需求（FSR/TSR）</div></a>
+</div>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>

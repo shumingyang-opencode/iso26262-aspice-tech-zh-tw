@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單元 12 · SWE.5 軟體整合與整合測試 · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="逐層整合軟體模組並驗證介面，含整合測試案例範例。">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>單元 12 · SWE.5 軟體整合與整合測試</h1>
+  <p class="subtitle">整合策略、相依性測試、介面測試</p>
+</header>
+<nav class="topnav">  <a href="../index.html">首頁</a>
+  <a href="../map.html">概念地圖</a>
+  <a href="../learning-path.html">學習路線</a>
+  <a href="../docs/index.html">單元教學</a>
+  <a href="../glossary.html">術語表</a>
+  <a href="../processes.html">過程速查</a>
+  <a href="../standards.html">標準對照</a>
+  <a href="../about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 單元教學</a></div>
+<div class="guide">
+<h2>12.1 SWE.5 在做什麼</h2>
+<p><strong>SWE.5 軟體整合與整合測試</strong>：把已驗證的<strong>單元</strong>依架構<strong>整合</strong>成子系統/完整軟體，並用<strong>整合測試</strong>證明元件間<strong>互動正確</strong>。</p>
+<div class="callout"><strong>與 SWE.4 的界線：</strong>SWE.4 測「單元自己對不對」，SWE.5 測「單元合起來對不對」——介面、呼叫順序、資料流、資源競爭。</div>
+
+<h2>12.2 整合策略</h2>
+<table>
+<tr><th>策略</th><th>做法</th><th>優點</th><th>風險</th></tr>
+<tr><td>Big-bang</td><td>一次全部接</td><td>快</td><td>錯難定位（不建議）</td></tr>
+<tr><td>Bottom-up</td><td>底層→上層</td><td>介面早驗證</td><td>上層邏輯晚驗</td></tr>
+<tr><td>Top-down</td><td>上層→底層（stub）</td><td>流程早通</td><td>底層風險晚見</td></tr>
+<tr><td>Critical-path</td><td>先合高風險/高 ASIL</td><td>風險先驗</td><td>需計畫細</td></tr>
+</table>
+<div class="callout info"><strong>車用常用：</strong>bottom-up + critical-path 混合——先整合高 ASIL 路徑（AEB 決策→致動），再接周邊。</div>
+
+<h2>12.3 整合測試用例設計</h2>
+<ul>
+<li><strong>介面測試</strong>：參數、回傳、全域資料。</li>
+<li><strong>資料流測試</strong>：TTC 計算 → 決策 → 煞車命令的串連。</li>
+<li><strong>狀態轉換</strong>：正常 → 安全狀態 → 復原。</li>
+<li><strong>資源測試</strong>：記憶體耗用、無洩漏、無競爭。</li>
+</ul>
+<div class="demo-block"><div class="demo-label">範例 IT</div><pre>IT-021｜來源 SWR-AEB-011/014｜AEB 決策 + 安全狀態
+  情境：正常運行中，雷達心跳停止（模擬）
+  步驟：輸入停止的心跳 → 等 200ms
+  期望：AEB 決策模組收到逾時事件 → 進入安全狀態
+       （BRAKE_REQUEST 保持 OFF + 警示 ON）
+  通過準則：狀態轉換 &lt; 200ms；無殘留記憶體增長
+</pre></div>
+
+<h2>12.4 與架構的對應</h2>
+<p>每輪整合要<strong>對應架構層</strong>（見單元 9）：先驗驅動層→服務層→應用層，每層整合都以該層介面為測試面。</p>
+<div class="pipe"><span class="step">驅動層整合</span><span class="arr">→</span><span class="step">服務層整合</span><span class="arr">→</span><span class="step">應用層整合</span><span class="arr">→</span><span class="step">完整軟體</span></div>
+
+<h2>12.5 Worked Example：一週整合計畫</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>Day1  驅動層：CAN + Watchdog 整合（frame 收發、心跳）
+Day2  服務層：通訊 + 排程整合（資料不丟、優先權正確）
+Day3  Critical path：TTC → AEB 決策 → 煞車命令（模擬致動）
+Day4  加入警示與安全狀態模組
+Day5  全模組整合 + 資源檢查（記憶體/CPU）
+Day6  回歸：重跑 Day1-5 + 記錄整合測試報告
+</pre></div>
+<p>動手：為你的系統選一種整合策略，並寫出 3 個跨單元的整合測試用例。</p>
+
+  <div class="outcome">
+    <strong>看完這單元你應該能說出：</strong>
+    <ul><li>選擇軟體整合策略（bottom-up/top-down）。</li><li>設計整合測試用例（介面/相依性）。</li><li>解釋 SWE.4 與 SWE.5 的界線。</li></ul>
+  </div>
+
+  <h2>延伸閱讀</h2>
+  <ul>
+<li>上一篇：<a href="unit-11.html">單元 11 · SWE.4</a>。</li><li>下一篇：<a href="unit-13.html">單元 13 · SWE.6</a>。</li><li><a href="../processes.html">過程速查</a></li>
+  </ul>
+
+<div class="next-prev">
+    <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
+    <a class="np-next" href="unit-13.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 13 · SWE.6 軟體資格測試</div></a>
+</div>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>

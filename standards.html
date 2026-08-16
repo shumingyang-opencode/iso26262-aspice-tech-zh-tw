@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>標準對照 · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="ISO 26262 與 ASPICE 標準對照">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<div class="container">
+<header><h1>標準對照</h1><p class="subtitle">ISO 26262 12 parts ↔ ASPICE 過程群 ↔ ASIL 要求</p></header>
+<nav class="topnav">  <a href="index.html">首頁</a>
+  <a href="map.html">概念地圖</a>
+  <a href="learning-path.html">學習路線</a>
+  <a href="docs/index.html">單元教學</a>
+  <a href="glossary.html">術語表</a>
+  <a href="processes.html">過程速查</a>
+  <a href="standards.html">標準對照</a>
+  <a href="about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 回首頁</a></div>
+<div class="guide">
+  <div class="callout info"><strong>ISO 26262 12 parts 一覽</strong></div>
+<table>
+<tr><th>Part</th><th>主題</th><th>主要內容</th><th>相關單元</th></tr>
+<tr><td><strong>Part 1</strong></td><td>詞彙 Vocabulary</td><td>定義與術語</td><td>單元 2</td></tr>
+<tr><td><strong>Part 2</strong></td><td>功能安全管理</td><td>安全計畫、確認措施、安全案例</td><td>單元 18</td></tr>
+<tr><td><strong>Part 3</strong></td><td>概念階段</td><td>Item 定義、HARA、安全目標</td><td>單元 4/5</td></tr>
+<tr><td><strong>Part 4</strong></td><td>系統層開發</td><td>TSR、系統設計、整合、驗證</td><td>單元 6/7</td></tr>
+<tr><td><strong>Part 5</strong></td><td>硬體層開發</td><td>硬體安全需求、FMEDA</td><td>單元 14</td></tr>
+<tr><td><strong>Part 6</strong></td><td>軟體層開發</td><td>軟體安全需求到驗證</td><td>單元 8–13</td></tr>
+<tr><td><strong>Part 7</strong></td><td>生產與營運</td><td>生產、操作、維護、報廢</td><td>單元 2</td></tr>
+<tr><td><strong>Part 8</strong></td><td>支持過程</td><td>CM、變更、驗證、信任度等</td><td>單元 16/18</td></tr>
+<tr><td><strong>Part 9</strong></td><td>ASIL 導向分析</td><td>分解、FMEA、FTA、DFA</td><td>單元 15</td></tr>
+<tr><td><strong>Part 10</strong></td><td>ISO 26262 指南</td><td>應用指引</td><td>單元 2</td></tr>
+<tr><td><strong>Part 11</strong></td><td>半導體指南</td><td>半導體元件應用指引</td><td>單元 14</td></tr>
+<tr><td><strong>Part 12</strong></td><td>摩托車適用</td><td>摩托車領域調整</td><td>單元 2</td></tr>
+</table>
+<h2>ISO 26262（Part 6 軟體層）↔ ASPICE（SWE）</h2>
+<table>
+<tr><th>ISO 26262 活動</th><th>對應 ASPICE 過程</th><th>關鍵要求</th></tr>
+<tr><td>軟體安全需求規格</td><td>SWE.1</td><td>含 ASIL 屬性、雙向追溯</td></tr>
+<tr><td>軟體架構設計</td><td>SWE.2</td><td>分層、freedom from interference</td></tr>
+<tr><td>軟體單元設計與實作</td><td>SWE.3</td><td>編碼規範（MISRA C）、防禦式設計</td></tr>
+<tr><td>軟體單元驗證</td><td>SWE.4</td><td>靜態分析 + 單元測試 + 覆蓋率</td></tr>
+<tr><td>軟體整合與測試</td><td>SWE.5</td><td>漸進整合、介面測試</td></tr>
+<tr><td>軟體資格測試</td><td>SWE.6</td><td>需求式測試、Robustness、目標環境</td></tr>
+</table>
+<h2>ASIL 與要求強度</h2>
+<table>
+<tr><th>等級</th><th>含義</th><th>要求強度</th></tr>
+<tr><td><strong>QM</strong></td><td>一般品質管理即可</td><td>無功能安全額外要求</td></tr>
+<tr><td><strong>ASIL A</strong></td><td>輕度危害</td><td>基礎要求</td></tr>
+<tr><td><strong>ASIL B</strong></td><td>中度危害</td><td>中等要求（如語句覆蓋）</td></tr>
+<tr><td><strong>ASIL C</strong></td><td>高度危害</td><td>較高要求（如分支覆蓋）</td></tr>
+<tr><td><strong>ASIL D</strong></td><td>最高危害</td><td>最高要求（如 MC/DC、獨立性）</td></tr>
+</table>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>

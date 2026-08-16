@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單元 13 · SWE.6 軟體資格測試 · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="在目標環境做資格測試證明符合需求，含驗收報告範例。">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>單元 13 · SWE.6 軟體資格測試</h1>
+  <p class="subtitle">需求式測試、Robustness、驗收環境</p>
+</header>
+<nav class="topnav">  <a href="../index.html">首頁</a>
+  <a href="../map.html">概念地圖</a>
+  <a href="../learning-path.html">學習路線</a>
+  <a href="../docs/index.html">單元教學</a>
+  <a href="../glossary.html">術語表</a>
+  <a href="../processes.html">過程速查</a>
+  <a href="../standards.html">標準對照</a>
+  <a href="../about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 單元教學</a></div>
+<div class="guide">
+<h2>13.1 SWE.6 在做什麼</h2>
+<p><strong>SWE.6 軟體資格測試</strong>：在<strong>目標環境</strong>（或高度模擬的環境）執行，證明<strong>完整軟體符合軟體需求</strong>。這是軟體層的「畢業考」。</p>
+<div class="callout"><strong>對應 ISO 26262：</strong>Part 6 的軟體驗證。重點：<strong>需求式測試</strong>（每條 SWR 都要被測）、<strong>Robustness</strong>（異常輸入不崩潰）。</div>
+
+<h2>13.2 資格測試 vs 其他測試</h2>
+<table>
+<tr><th>測試</th><th>對象</th><th>環境</th><th>證明什麼</th></tr>
+<tr><td>SWE.4 單元</td><td>單元</td><td>PC/模擬</td><td>單元符合詳細設計</td></tr>
+<tr><td>SWE.5 整合</td><td>整合後模組</td><td>模擬/部分目標</td><td>元件互動正確</td></tr>
+<tr><td>SWE.6 資格</td><td>完整軟體</td><td>目標環境</td><td>符合軟體需求</td></tr>
+</table>
+
+<h2>13.3 資格測試計畫重點</h2>
+<ul>
+<li><strong>需求覆蓋</strong>：列出每條 SWR → 對應測試（100%）。</li>
+<li><strong>Robustness</strong>：非法輸入、訊號中斷、負載突發。</li>
+<li><strong>環境</strong>：目標硬體/與目標一致的工具鏈。</li>
+<li><strong>通過準則</strong>：預先在計畫中定義。</li>
+</ul>
+<div class="demo-block"><div class="demo-label">範例</div><pre>軟體資格測試計畫（AEB）
+環境：目標 ECU + 訊號模擬（Vector CANoe）
+需求覆蓋：SWR 共 45 條 → 測試 60 個用例（全數追溯）
+Robustness 組：
+  RQ-01  CAN bus off 30s → 系統不崩潰、恢復正常
+  RQ-02  非法 frame（亂 CRC）→ 丟棄 + 日誌
+  RQ-03  CPU 滿載瞬間 → AEB 決策時序仍 ≤ 20ms
+通過準則：無 CRITICAL 失敗；需求式用例全過；Robustness
+          全過（可接受低嚴重度例外並開問題單）
+</pre></div>
+
+<h2>13.4 資格測試報告</h2>
+<ul>
+<li>結果摘要（通過率、失敗清單）。</li>
+<li>失敗 → 關聯 <strong>SUP.9 問題單</strong>。</li>
+<li>結論：軟體符合需求、可進入系統整合（SYS.4）。</li>
+</ul>
+<div class="callout warn"><strong>常見錯誤：</strong>用「開發環境模擬」當資格測試，結果實車出問題。資格測試的環境要<strong>盡量貼近目標</strong>，否則證據力不足。</div>
+
+<h2>13.5 Worked Example：一條需求 → 資格測試</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>SWR-AEB-011（TTC&lt;1.2s 輸出 BRAKE_REQUEST=ON）
+資格測試 QT-031：
+  在目標 ECU 上送入模擬雷達資料流（真實 CAN 訊號）
+  其中一幀 TTC=1.1s → 觀察 BRAKE_REQUEST 訊號
+  期望：訊號在 TTC&lt;1.2s 後 ≤5ms 內為 ON；
+        當 TTC 回 2.0s 以上 → 恢復 OFF
+  結果：PASS（實測延遲 3ms）
+  證據：CAN log + 時間戳 + 測試紀錄
+</pre></div>
+<p>動手：為你的 3 條軟體需求各設計一個資格測試用例（含環境與通過準則）。</p>
+
+  <div class="outcome">
+    <strong>看完這單元你應該能說出：</strong>
+    <ul><li>撰寫軟體資格測試計畫（需求式測試 + Robustness）。</li><li>說明資格測試與單元/整合測試的差異。</li><li>產出資格測試報告作為驗收證據。</li></ul>
+  </div>
+
+  <h2>延伸閱讀</h2>
+  <ul>
+<li>上一篇：<a href="unit-12.html">單元 12 · SWE.5</a>。</li><li>下一篇：<a href="unit-14.html">單元 14 · 硬體層</a>。</li><li><a href="../processes.html">過程速查</a></li>
+  </ul>
+
+<div class="next-prev">
+    <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
+    <a class="np-next" href="unit-14.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 14 · 硬體層 Part 5 與軟硬體相依</div></a>
+</div>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單元 5 · 安全目標與安全需求（FSR/TSR） · ISO 26262 × ASPICE 繁中教學站</title>
+<meta name="description" content="從 HARA 產出安全目標，再細化成功能安全需求與技術安全需求。">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>單元 5 · 安全目標與安全需求（FSR/TSR）</h1>
+  <p class="subtitle">安全目標撰寫、ASIL 分解、FSR/TSR 範例</p>
+</header>
+<nav class="topnav">  <a href="../index.html">首頁</a>
+  <a href="../map.html">概念地圖</a>
+  <a href="../learning-path.html">學習路線</a>
+  <a href="../docs/index.html">單元教學</a>
+  <a href="../glossary.html">術語表</a>
+  <a href="../processes.html">過程速查</a>
+  <a href="../standards.html">標準對照</a>
+  <a href="../about.html">關於</a>
+  </nav><div class="back-link"><a href="index.html">← 單元教學</a></div>
+<div class="guide">
+<h2>5.1 從安全目標到安全需求</h2>
+<p>安全目標（SG）是「最高層的安全要求」。接著要把每個 SG 拆解成：</p>
+<table>
+<tr><th>層級</th><th>名稱</th><th>層面</th><th>範例</th></tr>
+<tr><td>Item 層</td><td><strong>FSR</strong>（功能安全需求）</td><td>「做什麼」</td><td>必須偵測行人碰撞風險</td></tr>
+<tr><td>系統層</td><td><strong>TSR</strong>（技術安全需求）</td><td>「怎麼做」</td><td>以雷達在 30 m 內偵測行人</td></tr>
+<tr><td>硬體/軟體層</td><td>HWR / SWR</td><td>「落在哪」</td><td>感測器取樣 ≥ 30 Hz</td></tr>
+</table>
+<div class="callout"><strong>關鍵：</strong>每一層需求都要帶<strong>ASIL 屬性</strong>與<strong>雙向追溯</strong>（往上一層問「這滿足誰」，往下一層問「這由誰實現」）。</div>
+
+<h2>5.2 FSR 撰寫規則</h2>
+<ul>
+<li>每條 FSR 對應至少一個 SG，繼承該 SG 的 ASIL。</li>
+<li>寫「要達成什麼」，不寫「用什麼技術」。</li>
+<li>可驗證：要能量測或測試。</li>
+</ul>
+<div class="demo-block"><div class="demo-label">範例 FSR</div><pre>FSR-01（ASIL D）｜來源 SG-AEB-01
+當前方 30 m 內出現行人且碰撞時間（TTC）&lt; 1.2 s 時，
+AEB 必須啟動煞車。
+
+FSR-02（ASIL D）｜來源 SG-AEB-01
+AEB 啟動後，若行人離開路徑，必須停止煞車以避免誤煞。
+</pre></div>
+
+<h2>5.3 TSR 撰寫規則</h2>
+<ul>
+<li>把 FSR 落到系統架構：指定元件與介面。</li>
+<li>加入<strong>安全機制</strong>：偵測錯誤、進入安全狀態。</li>
+<li>加入<strong>時序</strong>與<strong>效能</strong>約束（如 FTTI）。</li>
+</ul>
+<div class="demo-block"><div class="demo-label">範例 TSR</div><pre>TSR-01（ASIL D）｜來源 FSR-01
+前雷達模組必須以 ≥ 30 Hz 輸出目標清單（含距離/相對速度/類別），
+端到端延遲 ≤ 50 ms。
+
+TSR-02（ASIL D）｜來源 FSR-01
+煞車控制單元須在收到煞車指令後 20 ms 內輸出致動命令；
+若致動失敗，須在 100 ms 內報告並切換到備援路徑。
+
+安全機制 SM-01：雷達離線偵測（心跳 50 ms），失效時 200 ms 內
+進入安全狀態（關閉 AEB 並警示駕駛）。
+</pre></div>
+
+<h2>5.4 ASIL 分解</h2>
+<p><strong>ASIL 分解</strong>是把高 ASIL 需求拆給<strong>多個獨立元件</strong>，例如 ASIL D 拆成 <strong>ASIL C(D) + ASIL A(D)</strong>（括號保留原 ASIL 以追溯）。</p>
+<table>
+<tr><th>原 ASIL</th><th>分解組合例</th></tr>
+<tr><td>ASIL D</td><td>ASIL C(D) + ASIL A(D)</td></tr>
+<tr><td>ASIL D</td><td>ASIL B(D) + ASIL B(D)</td></tr>
+<tr><td>ASIL C</td><td>ASIL B(C) + ASIL A(C)</td></tr>
+</table>
+<div class="callout warn"><strong>注意：</strong>分解要滿足<strong>獨立性</strong>（避免共因失效，常用 DFA 驗證）。分解不是「把 ASIL 變小」的手段，而是「用冗餘換需求分散」的設計策略。</div>
+
+<h2>5.5 Worked Example：從 SG 到 TSR 的完整鏈</h2>
+<div class="demo-block"><div class="demo-label">範例</div><pre>SG-AEB-01（ASIL D）
+  └── FSR-01（ASIL D）｜偵測行人碰撞風險 → 啟動煞車
+        └── FSR-01.1（ASIL D）｜雷達感測行人（感知）
+        └── FSR-01.2（ASIL D）｜ECU 判定 TTC 並下指令（決策）
+        └── FSR-01.3（ASIL D）｜致動器執行煞車（執行）
+              └── TSR-01.3.1（ASIL D）｜煞車致動 ≤ 20 ms
+              └── TSR-01.3.2（ASIL D）｜致動失敗 100 ms 內報告
+              └── 分解：TSR-01.3.1 拆為 ASIL C(D) 主路 + ASIL A(D) 監視路
+</pre></div>
+<p>動手：把你單元 4 的安全目標，拆出至少 3 條 FSR 與 3 條 TSR。</p>
+
+  <div class="outcome">
+    <strong>看完這單元你應該能說出：</strong>
+    <ul><li>從安全目標衍伸出功能安全需求（FSR）。</li><li>把 FSR 細化成技術安全需求（TSR）。</li><li>說明 ASIL 分解的原理與注意事項。</li></ul>
+  </div>
+
+  <h2>延伸閱讀</h2>
+  <ul>
+<li>上一篇：<a href="unit-04.html">單元 4 · HARA</a>。</li><li>下一篇：<a href="unit-06.html">單元 6 · SYS.1–SYS.3</a>。</li><li><a href="../glossary.html">術語表</a></li>
+  </ul>
+
+<div class="next-prev">
+    <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
+    <a class="np-next" href="unit-06.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 6 · SYS 過程群：SYS.1–SYS.3</div></a>
+</div>
+</div>
+<footer>這是 ISO 26262 × ASPICE 繁中教學站 · 由 OpenCode 建置<br>
+  <span class="footer-license">本站教學內容（繁體中文解說）為本站原創，採 CC-BY-4.0；術語與規範引用自 <a href="https://www.iso.org/standards.html" rel="noopener">ISO 26262</a>與 <a href="https://vda-qmc.de/en/automotive-spice/" rel="noopener">Automotive SPICE（VDA）</a>之公開資訊。</span></footer>
+</div></body></html>
