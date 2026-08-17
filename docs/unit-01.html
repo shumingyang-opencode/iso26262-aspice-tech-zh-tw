@@ -71,6 +71,20 @@
 <li><strong>「做到 ASIL D 就萬事 OK」</strong>——錯。ASIL 只定義「多嚴格」，流程照不照做（ASPICE）另算。</li>
 </ul>
 
+  <h2>1.6 深入原理：安全與流程為什麼必須互相咬合</h2>
+  <p>安全工程不是在專案末端加一層審查，而是把「風險」轉成可管理的工程約束。HARA 決定風險嚴重度與 ASIL；ASIL 再決定需求、架構、驗證與獨立性需要多強。ASPICE 則把這些活動放進可重複的流程，要求有輸入、活動、輸出與追溯。兩者交會處就是同一份證據：例如一條 ASIL D TSR 既是 ISO 的安全需求，也是 SYS.2 的工作產品，最後由 SWE/SYS 測試報告閉環。</p>
+  <table><tr><th>若缺少</th><th>表面現象</th><th>真正風險</th></tr><tr><td>HARA</td><td>需求看似完整</td><td>未定義的危害沒有安全目標</td></tr><tr><td>追溯</td><td>文件很多</td><td>無法證明測試真的覆蓋安全需求</td></tr><tr><td>獨立檢查</td><td>團隊自評通過</td><td>同一個錯誤可能一路被複製</td></tr></table>
+  <h2>1.7 Worked Example：一條需求如何穿過雙軌流程</h2>
+  <div class="demo-block"><div class="demo-label">範例</div><pre>危害：AEB 未在行人前煞車（HARA-01，ASIL D）
+SG-01 → FSR-01 → TSR-01 → SWR-01
+  → SYS.2/SWE.1 需求評審
+  → SWE.4 單元測試 + SWE.6 目標環境測試
+  → SUP.8 基線與測試證據
+閉環檢查：每一層都能向上找到來源、向下找到實現與驗證。
+</pre></div>
+  <h2>1.8 練習</h2>
+  <ol><li>選一個車用功能，分別寫出一項安全風險與一項流程風險。</li><li>畫出 SG、需求、測試、問題單四個節點的追溯鏈。</li><li>指出若只保留測試報告、沒有需求來源，稽核時缺少哪種論證。</li></ol>
+
   <div class="outcome">
     <strong>看完這單元你應該能說出：</strong>
     <ul><li>說出為什麼車用軟體需要同時看「安全」與「流程」。</li><li>畫出 V-model 並指出 ISO 26262 與 ASPICE 各自對應的位置。</li><li>舉例說明 ISO 26262 與 ASPICE 的分工與互補關係。</li></ul>
