@@ -114,6 +114,67 @@ TSR-02（ASIL D）｜來源 FSR-01
 <li>上一篇：<a href="unit-04.html">單元 4 · HARA</a>。</li><li>下一篇：<a href="unit-06.html">單元 6 · SYS.1–SYS.3</a>。</li><li><a href="../glossary.html">術語表</a></li>
   </ul>
 
+  <div class="round1-deepen">
+  <h2>5.A 進階真實情境 Worked Example</h2>
+  <div class="demo-block"><div class="demo-label">進階範例：混合訊號 ASIC 的硬體安全機制設計</div><pre>
+元件：車用電源管理 IC（PMIC），負責 ECU 供電。
+ASIL 等級：ASIL D（因為是安全關鍵 ECU 的電源）
+
+硬體架構：
+┌────────────────────────────────────────────────────────────┐
+│                    PMIC                                    │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐                │
+│  │ LDO 5V   │  │ Buck 3.3V│  │ LDO 1.8V │                │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘                │
+│       │              │              │                      │
+│  ┌────┴──────────────┴──────────────┴────┐                │
+│  │     電壓監控器（Voltage Supervisor）   │                │
+│  │     • 過壓檢測（OVP）                  │                │
+│  │     • 欠壓檢測（UVP）                  │                │
+│  │     • 開路檢測（Open Load）            │                │
+│  └───────────────────────────────────────┘                │
+│  ┌───────────────────────────────────────┐                │
+│  │     故障注入測試點                     │                │
+│  │     • 測試點 TP-01：LDO 輸出          │                │
+│  │     • 測試點 TP-02：Buck 輸出         │                │
+│  └───────────────────────────────────────┘                │
+└────────────────────────────────────────────────────────────┘
+
+安全機制設計：
+  SM-01：電壓窗口監控（3.1V ~ 3.5V），偏差 > 5% 觸發重置
+  SM-02：電流限制（Current Limit），過流 > 500mA 觸發關斷
+  SM-03：溫度監控，結溫 > 150°C 觸發降額
+  SM-04：冗餘電壓檢測（雙通道交叉驗證）
+
+FMEDA 計算：
+  SPFM（單點故障度量）：要求 ≥ 99%（ASIL D）
+  LFM（潛在故障度量）：要求 ≥ 90%（ASIL D）
+  設計達成：SPFM = 99.2%，LFM = 91.5%</pre></div>
+
+  <h2>5.B 深入原理擴充</h2>
+  <p>ISO 26262 Part 5 §8 要求<strong>「硬體架構度量」</strong>（Hardware Architectural Metrics）
+  必須在硬體設計階段驗證：SPFM、LFM、PMHF（Probabilistic Metric for Hardware Failures）。
+  這些度量直接影響硬體的 ASIL 達標能力。</p>
+  <p>關鍵概念：<strong>故障模式與影響分析（FMEDA）</strong>是 ISO 26262 Part 5 的核心工具。
+  與傳統 FMEA 不同，FMEDA 聚焦於<strong>量化</strong>：每個故障模式的失效率（λ）、偵測率、
+  潛在故障比例。FMEDA 結果直接用於計算 SPFM/LFM，是硬體安全驗證的數學基礎。</p>
+
+  <h2>5.C 診斷式疑難排解表</h2>
+  <table>
+  <tr><th>症狀</th><th>可能原因</th><th>解決方案</th></tr>
+  <tr><td>SPFM 未達 ASIL D 要求</td><td>故障偵測覆蓋率不足</td><td>增加冗餘偵測機制（如雙通道電壓監控），提高偵測率</td></tr>
+  <tr><td>PMHF 超標</td><td>元件失效率（λ）資料不準確</td><td>使用 SIEMENS/Textron 等汽車級元件的失效率資料，而非商用級</td></tr>
+  <tr><td>FMEDA 結果與實際不符</td><td>測試條件未模擬真實環境</td><td>在 -40°C ~ +150°C 溫度範圍內驗證故障注入測試</td></tr>
+  </table>
+
+  <h2>5.D 進階挑戰題</h2>
+  <ol>
+  <li>為 PMIC 的 LDO 5V 模組撰寫完整的 FMEDA 表，至少包含 5 種故障模式。</li>
+  <li>若 PMIC 需支援 ASIL D + ASIL B 的混合供電，如何設計電壓分離策略？</li>
+  <li>計算 PMHF：已知 λ_total = 100 FIT，SPFM = 99%，LFM = 90%，求 PMHF 並判斷是否符合 ASIL D。</li>
+  </ol>
+  </div>
+
 <div class="next-prev">
     <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
     <a class="np-next" href="unit-06.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 6 · SYS 過程群：SYS.1–SYS.3</div></a>

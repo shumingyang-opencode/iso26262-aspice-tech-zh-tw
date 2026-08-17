@@ -118,6 +118,69 @@ bool ttc_calc(float dist, float vrel, uint32_t* ttc_ms, bool* valid) {
 <li>上一篇：<a href="unit-09.html">單元 9 · SWE.2</a>。</li><li>下一篇：<a href="unit-11.html">單元 11 · SWE.4</a>。</li><li><a href="../glossary.html">術語表</a></li>
   </ul>
 
+  <div class="round1-deepen">
+  <h2>10.A 進階真實情境 Worked Example</h2>
+  <div class="demo-block"><div class="demo-label">進階範例：ASIL D 軟體的獨立安全驗證（ISA）</div><pre>
+驗證目標：車速計算模組（ASIL D）的軟體獨立安全驗證。
+
+┌─ ISA 驗證計畫 ────────────────────────────────────────────┐
+│ 1. 驗證範圍：                                             │
+│    • 軟體架構設計是否符合安全需求                          │
+│    • 軟體單元測試是否達到 MC/DC 覆蓋率                    │
+│    • 靜態分析是否遵循 MISRA C:2012                        │
+│    • 故障注入測試是否覆蓋所有安全機制                      │
+│                                                           │
+│ 2. 獨立性要求：                                           │
+│    • ISA 執行團隊 ≠ 開發團隊（組織獨立）                  │
+│    • ISA 工具 ≠ 開發工具（工具獨立）                      │
+│    • ISA 環境 ≠ 開發環境（環境獨立）                      │
+│                                                           │
+│ 3. 驗證方法：                                             │
+│    • 文件審查（Design Review）                            │
+│    • 程式碼審查（Code Review）                            │
+│    • 測試執行（Test Execution）                            │
+│    • 故障注入（Fault Injection）                           │
+├─ 執行結果 ────────────────────────────────────────────────┤
+│ 1. 文件審查：                                             │
+│    • 發現 3 處需求追溯遺漏 → 已修正                      │
+│    • 發現 1 處安全機制覆蓋不足 → 已補強                  │
+│                                                           │
+│ 2. 程式碼審查：                                           │
+│    • 發現 5 處 MISRA 違規 → 已修正                       │
+│    • 發現 2 處效能瓶頸 → 已優化                          │
+│                                                           │
+│ 3. 測試執行：                                             │
+│    • 複測覆蓋率：MC/DC = 100%                             │
+│    • 故障注入：100% 安全機制觸發成功                      │
+│                                                           │
+│ 4. 結論：通過 ISA，無 Severity 1/2 殘留問題              │
+└────────────────────────────────────────────────────────────┘</pre></div>
+
+  <h2>10.B 深入原理擴充</h2>
+  <p>ISO 26262 Part 8 §11 要求<strong>「獨立安全驗證」</strong>（Independent Safety Validation）
+  的獨立性程度取決於 ASIL 等級：ASIL D 要求最高獨立性（組織、工具、環境三重獨立）。</p>
+  <p>關鍵概念：<strong>「驗證」（Verification）vs「確認」（Validation）</strong>。
+  驗證回答「產品是否正確地構建？」（Are we building the product right?），
+  確認回答「是否構建了正確的產品？」（Are we building the right product?）。
+  ISO 26262 的 ISA 是驗證——確認設計實現符合安全需求；而 ASPICE 的 SWE.4/SWE.5
+  則涵蓋驗證與確認兩個面向。</p>
+
+  <h2>10.C 診斷式疑難排解表</h2>
+  <table>
+  <tr><th>症狀</th><th>可能原因</th><th>解決方案</th></tr>
+  <tr><td>ISA 獨立性不足</td><td>驗證團隊與開發團隊有共同 KPI</td><td>建立獨立的 ISA 團隊組織架構，KPI 與開發團隊分離</td></tr>
+  <tr><td>ISA 發現的問題修正後未複驗</td><td>缺乏修正後的複驗機制</td><td>所有 ISA 發現問題修正後，必須執行迴歸測試並由 ISA 團隊複驗</td></tr>
+  <tr><td>ISA 報告格式不一致</td><td>缺乏統一的 ISA 報告模板</td><td>建立標準化的 ISA 報告模板，含發現、嚴重等級、修正狀態、複驗結果</td></tr>
+  </table>
+
+  <h2>10.D 進階挑戰題</h2>
+  <ol>
+  <li>設計一個完整的 ISA 計畫，涵蓋車速計算模組的所有安全相關活動。</li>
+  <li>若 ISA 發現一個 Severity 1 的問題（安全機制失效），安全經理應如何處理？列出完整的事件響應流程。</li>
+  <li>比較 ISO 26262 Part 8 §11 與 ASPICE SWE.4 在軟體驗證要求上的異同。</li>
+  </ol>
+  </div>
+
 <div class="next-prev">
     <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
     <a class="np-next" href="unit-11.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 11 · SWE.4 軟體單元驗證</div></a>

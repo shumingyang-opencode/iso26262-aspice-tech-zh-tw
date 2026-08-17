@@ -107,6 +107,68 @@ SYS.3 尚未完成，因為需求沒有形成可驗證的端到端契約。
 <li>上一篇：<a href="unit-05.html">單元 5 · 安全目標與安全需求</a>。</li><li>下一篇：<a href="unit-07.html">單元 7 · SYS.4/SYS.5</a>。</li><li><a href="../processes.html">過程速查</a></li>
   </ul>
 
+  <div class="round1-deepen">
+  <h2>6.A 進階真實情境 Worked Example</h2>
+  <div class="demo-block"><div class="demo-label">進階範例：ASIL D 軟體單元的靜態分析與軟體架構驗證</div><pre>
+軟體單元：車速計算模組（Vehicle Speed Calculation）
+ASIL 等級：ASIL D（直接影響 AEB、ESC 等安全功能）
+
+軟體架構設計：
+┌────────────────────────────────────────────────────────────┐
+│              車速計算模組（ASIL D）                        │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐                │
+│  │ 輸入處理 │→│ 濾波演算法│→│ 輸出驗證 │                │
+│  │ (輪速脈衝│  │ (卡爾曼  │  │ (合理性  │                │
+│  │  解碼)   │  │  濾波器) │  │  檢查)   │                │
+│  └──────────┘  └──────────┘  └──────────┘                │
+│       ↑                               │                    │
+│  ┌────┴───────────────────────────────┴────┐              │
+│  │     安全機制：輸出範圍驗證               │              │
+│  │     車速範圍：0 ~ 300 km/h              │              │
+│  │     變化率限制：≤ 20 km/h per 10ms      │              │
+│  │     異常值 → 使用最後有效值 + 降級模式    │              │
+│  └─────────────────────────────────────────┘              │
+└────────────────────────────────────────────────────────────┘
+
+靜態分析結果（MISRA C:2012）：
+  必須遵循（Mandatory）：0 違規
+  強制遵循（Required）：23 違規 → 修正後 0 違規
+  建議遵循（Advisory）：47 違規 → 接受並記錄理由
+
+MISRA 違規分佈：
+  Rule 11.3（指標轉型）：15 處 → 改用安全轉型函式
+  Rule 14.4（布林運算）：5 處 → 改用明確比較
+  Rule 8.7（函式/物件作用域）：3 處 → 調整為模組內部
+
+軟體單元測試覆蓋率：
+  行覆蓋率（Statement Coverage）：100% ✓
+  分支覆蓋率（Branch Coverage）：100% ✓
+  MC/DC 覆蓋率：98.7%（剩餘 1.3% 為 defensive programming 分支）</pre></div>
+
+  <h2>6.B 深入原理擴充</h2>
+  <p>ISO 26262 Part 6 §9 要求<strong>「軟體單元測試」</strong>必須達到與 ASIL 等級對應的覆蓋率。
+  ASIL D 要求 MC/DC（Modified Condition/Decision Coverage），這是所有覆蓋率準則中最嚴格的——
+  每個布林條件都必須獨立影響判斷結果。</p>
+  <p>關鍵概念：<strong>MC/DC 的實務挑戰</strong>。MISRA C:2012 的 defensive programming 模式
+  （如 <code>if (ptr != NULL && ptr->valid)</code>）會產生 MC/DC 無法覆蓋的分支。
+  ISO 26262 允許在「defensive programming」分支上豁免 MC/DC，但必須記錄理由並經 Safety Review 確認。</p>
+
+  <h2>6.C 診斷式疑難排解表</h2>
+  <table>
+  <tr><th>症狀</th><th>可能原因</th><th>解決方案</th></tr>
+  <tr><td>MC/DC 覆蓋率無法達到 100%</td><td>defensive programming 分支無法獨立觸發</td><td>記錄為 defensive programming 豁免，經 Safety Review 確認</td></tr>
+  <tr><td>MISRA 違規修正引入新 Bug</td><td>自動修正工具未考慮業務邏輯</td><td>所有 MISRA 修正需人工審查，並執行迴歸測試</td></tr>
+  <tr><td>靜態分析報告與實際編碼不一致</td><td>分析工具版本或配置不同</td><td>統一工具版本（如 Polyspace R2023b）並鎖定 MISRA 配置檔</td></tr>
+  </table>
+
+  <h2>6.D 進階挑戰題</h2>
+  <ol>
+  <li>為車速計算模組的「合理性檢查」功能撰寫 3 個 MC/DC 測試案例，每個案例標註觸發的條件組合。</li>
+  <li>若車速計算模組改用 C++ 重寫，MISRA C 違規如何處理？列出至少 3 個需注意的差異。</li>
+  <li>設計一個完整的軟體單元測試策略，涵蓋 ASIL B 與 ASIL D 的差異化要求。</li>
+  </ol>
+  </div>
+
 <div class="next-prev">
     <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
     <a class="np-next" href="unit-07.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 7 · SYS.4 / SYS.5：系統整合與資格測試</div></a>

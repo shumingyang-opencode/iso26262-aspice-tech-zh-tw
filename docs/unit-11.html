@@ -115,6 +115,59 @@ UT-014｜異常｜傳入 NULL 指標 → 回傳 false，不崩潰
 <li>上一篇：<a href="unit-10.html">單元 10 · SWE.3</a>。</li><li>下一篇：<a href="unit-12.html">單元 12 · SWE.5</a>。</li><li><a href="../glossary.html">術語表</a></li>
   </ul>
 
+  <div class="round1-deepen">
+  <h2>11.A 進階真實情境 Worked Example</h2>
+  <div class="demo-block"><div class="demo-label">進階範例：VDA-SPICE 評鑑準備——從差距分析到符合性報告</div><pre>
+專案背景：Tier-1 準備首次 VDA-SPICE 評鑑，目標 CL2。
+評鑑範圍：SWE.1（軟體需求分析）、SWE.2（軟體架構設計）、SWE.5（軟體整合測試）
+
+┌─ 差距分析（Gap Analysis）────────────────────────────────┐
+│ Process Area │ CL1 現況 │ CL2 差距 │ 修正措施              │
+│ SWE.1        │ 部分符合  │ 5 項缺失 │ 補充追溯矩陣          │
+│ SWE.2        │ 不符合    │ 8 項缺失 │ 重新設計架構文件      │
+│ SWE.5        │ 部分符合  │ 3 項缺失 │ 補充整合測試計畫      │
+├─ 缺失細項（SWE.1 為例）──────────────────────────────────┤
+│ 1. 基本實踐 BP.1：未建立「軟體需求規格文件」               │
+│    → 建立 SWRS 文件，使用 reqIF 格式                      │
+│ 2. BP.3：需求追溯性不足（僅單向追溯）                     │
+│    → 建立雙向追溯矩陣（功能→安全→軟體）                  │
+│ 3. BP.5：需求變更未記錄                                    │
+│    → 導入需求變更控制流程（Change Request）                │
+│ 4. BP.6：與硬體介面需求未定義                              │
+│    → 補充 HSI 需求文件                                    │
+│ 5. BP.7：與客戶介面需求未定義                              │
+│    → 補充 API 需求文件                                    │
+├─ 修正計畫 ────────────────────────────────────────────────┤
+│ Phase 1（4 週）：建立文件框架與模板                       │
+│ Phase 2（6 週）：補充內容與追溯矩陣                      │
+│ Phase 3（2 週）：內部模擬評鑑（Mock Assessment）          │
+│ Phase 4（1 週）：修正殘留問題                             │
+└────────────────────────────────────────────────────────────┘</pre></div>
+
+  <h2>11.B 深入原理擴充</h2>
+  <p>ISO 33020（取代 VDA-SPICE 2016）定義了<strong>「過程能力」</strong>（Process Capability）
+  的評估框架。CL1（Base Practices performed）是最基本的要求——所有 BP 必須「執行」
+  （Performed），但不要求文件化或制度化。</p>
+  <p>關鍵概念：<strong>「基本實踐」（Base Practices, BP）</strong>vs<strong>「工作產品」（Work Products, WP）</strong>。
+  BP 是過程活動（做什么），WP 是過程產出（交付什么）。CL2 要求 BP 完整執行且 WP 有組織地管理——
+  這是多數團隊從 CL1 升級到 CL2 的主要瓶頸。</p>
+
+  <h2>11.C 診斷式疑難排解表</h2>
+  <table>
+  <tr><th>症狀</th><th>可能原因</th><th>解決方案</th></tr>
+  <tr><td>差距分析結果與實際評鑑不符</td><td>差距分析未考慮評鑑師的解釋差異</td><td>聘請有經驗的評鑑師進行差距分析，或與評鑑機構對齊評估標準</td></tr>
+  <tr><td>修正計畫執行延誤</td><td>修正措施未納入專案計畫</td><td>將 SPICE 修正納入專案里程碑，由專案經理追蹤</td></tr>
+  <tr><td>內部模擬評鑑發現新問題</td><td>差距分析遺漏了 BP 間的交互影響</td><td>在差距分析中加入 BP 間的依賴性分析</td></tr>
+  </table>
+
+  <h2>11.D 進階挑戰題</h2>
+  <ol>
+  <li>為 SWE.2（軟體架構設計）進行完整的差距分析，列出所有 BP 的符合現況與缺失。</li>
+  <li>若評鑑師在 CL2 評鑑中發現 SWE.1 的 BP.5（需求變更管理）不符合，安全經理應如何響應？</li>
+  <li>比較 VDA-SPICE CL2 與 CL3 的核心差異，各舉 3 個 BP 為例。</li>
+  </ol>
+  </div>
+
 <div class="next-prev">
     <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
     <a class="np-next" href="unit-12.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 12 · SWE.5 軟體整合與整合測試</div></a>

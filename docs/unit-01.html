@@ -95,6 +95,53 @@ SG-01 → FSR-01 → TSR-01 → SWR-01
 <li>下一篇：<a href="unit-02.html">單元 2 · ISO 26262 全景</a>。</li><li><a href="../standards.html">標準對照</a>：先看 12 parts 一覽。</li><li><a href="../glossary.html">術語表</a></li>
   </ul>
 
+  <div class="round1-deepen">
+  <h2>1.A 進階真實情境 Worked Example</h2>
+  <div class="demo-block"><div class="demo-label">進階範例：電動助力轉向（EPS）專案的安全×流程雙軌啟動</div><pre>
+專案背景：OEM 要求開發 EPS，目標 ASIL D + ASPICE CL3。
+┌─ 安全軌 ──────────────────────────────────────────────────┐
+│ Item 定義：EPS 馬達驅動、扭矩感測、車速信號、ECU 控制。  │
+│ HARA（Part 3）：                                          │
+│   H-01 輸出異常扭矩（非駕駛意圖轉向）                     │
+│   情境：高速公路 120 km/h，駕駛無法及時糾正                │
+│   S3 × E4 × C3 → ASIL D                                  │
+│ 安全目標 SG-01：EPS 不得輸出超過 ±5Nm 的非預期扭矩。      │
+│ 安全機制 SM-01：扭矩輸出與感測交叉驗證，差異 > 2Nm        │
+│   持續 3 個週期 → 關閉輔助並進入安全模式。                 │
+├─ 流程軌 ──────────────────────────────────────────────────┤
+│ ASPICE CL3 要求：                                         │
+│   MAN.3 專案計畫需納入安全里程碑（HARA 完成、安全概念凍結）│
+│   SWE.1 需求追溯矩陣：功能需求 → 安全需求 → 測試案例      │
+│   SYS.2 系統需求規格須含安全需求分配表                     │
+│ 雙軌交匯點：                                              │
+│   安全需求 = 系統需求的子集，追溯矩陣同時滿足 ASPICE 與   │
+│   ISO 26262 Part 4 §7 的雙重要求。                        │
+└────────────────────────────────────────────────────────────┘</pre></div>
+
+  <h2>1.B 深入原理擴充</h2>
+  <p>ISO 26262 與 ASPICE 的核心交集在於<strong>「需求管理」</strong>與<strong>「追溯性」</strong>。
+  ISO 26262 Part 2 §6 要求建立安全計畫（Safety Plan），ASPICE MAN.3 要求專案計畫，
+  兩者合併後形成「整合專案計畫」（Integrated Project Plan），其中安全里程碑嵌入開發流程。</p>
+  <p>關鍵概念：<strong>ASIL decomposition</strong>（Part 9）允許將高 ASIL 需求拆分為
+  多個較低 ASIL 的冗餘需求，分別分配到不同硬體/軟體元件，降低單一元件的開發成本。
+  但 decomposition 必須滿足 Independence（獨立性）要求——故障偵測、容錯時間間隔（FTTI）
+  與安全機制覆蓋率需同時驗證。</p>
+
+  <h2>1.C 診斷式疑難排解表</h2>
+  <table>
+  <tr><th>症狀</th><th>可能原因</th><th>解決方案</th></tr>
+  <tr><td>安全需求無法追溯到功能需求</td><td>HARA 遺漏情境或需求編號衝突</td><td>重建追溯矩陣，使用雙向編號規則（SA-001 → FR-001）</td></tr>
+  <tr><td>ASPICE 評鑑時追溯性不足</td><td>需求變更未同步更新追溯表</td><td>導入需求管理工具（如 Jama、DOORS），設定變更觸發同步機制</td></tr>
+  </table>
+
+  <h2>1.D 進階挑戰題</h2>
+  <ol>
+  <li>若 EPS 改為線控轉向（Steer-by-Wire），ASIL 等級如何變化？重新進行 HARA 並說明理由。</li>
+  <li>設計一個 ASIL decomposition 方案：將 SG-01（ASIL D）拆分為兩個 ASIL B(D) 的冗餘通道。</li>
+  <li>撰寫 MAN.3 的專案計畫草案，納入至少 3 個安全里程碑與對應的 ASPICE 工作產品。</li>
+  </ol>
+  </div>
+
 <div class="next-prev">
     <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
     <a class="np-next" href="unit-02.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 2 · ISO 26262 全景：12 parts 總覽</div></a>

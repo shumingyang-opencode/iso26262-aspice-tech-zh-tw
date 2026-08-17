@@ -114,6 +114,68 @@ FTA 顯示主路徑與監視路徑都依賴同一個 5V 電源與同一個時脈
 <li>上一篇：<a href="unit-14.html">單元 14 · 硬體層</a>。</li><li>下一篇：<a href="unit-16.html">單元 16 · SUP.8-10</a>。</li><li><a href="../glossary.html">術語表</a></li>
   </ul>
 
+  <div class="round1-deepen">
+  <h2>15.A 進階真實情境 Worked Example</h2>
+  <div class="demo-block"><div class="demo-label">進階範例：ASPICE 評鑑中的「過程範圍」選擇策略</div><pre>
+專案背景：Tier-1 開發 ADAS 系統，需要同時滿足 ASPICE 與 ISO 26262。
+
+┌─ 過程範圍選擇決策 ──────────────────────────────────────┐
+│ 決策因素：                                                 │
+│   1. 客戶要求（OEM 合約中的 ASPICE 等級要求）             │
+│   2. 安全等級（ASIL 等級影響 Process Area 選擇）          │
+│   3. 組織成熟度（避免選擇超出能力的 Process Area）         │
+│                                                           │
+│ OEM 合約要求：                                             │
+│   • SWE.1 ~ SWE.5：CL2                                    │
+│   • SYS.1 ~ SYS.5：CL2                                    │
+│   • MAN.3：CL2                                            │
+│   • SUP.1：CL2                                            │
+│                                                           │
+│ ISO 26262 隱含要求：                                      │
+│   • SWE.1（軟體需求分析）：ASIL D 要求 CL3               │
+│   • SWE.2（軟體架構設計）：ASIL D 要求 CL3               │
+│   • SWE.4（軟體單元驗證）：ASIL D 要求 CL3               │
+│                                                           │
+│ 決策：                                                     │
+│   基礎範圍：OEM 要求的 Process Area（CL2）               │
+│   增強範圍：ISO 26262 隱含的 Process Area（CL3）         │
+│   總計：12 個 Process Area，其中 3 個需達 CL3            │
+├─ 風險評估 ──────────────────────────────────────────────┤
+│ 風險 1：範圍過大導致評鑑延誤                               │
+│   → 分階段評鑑：第一階段先評 CL2，第二階段升級 CL3       │
+│                                                           │
+│ 風險 2：ISO 26262 隱含要求模糊                            │
+│   → 與評鑑師對齊：明確哪些 Process Area 因 ASIL D 需要    │
+│     提升到 CL3                                            │
+│                                                           │
+│ 風險 3：組織資源不足                                      │
+│   → 建立內部培訓計畫，提升團隊能力                        │
+└────────────────────────────────────────────────────────────┘</pre></div>
+
+  <h2>15.B 深入原理擴充</h2>
+  <p>ASPICE 評鑑範圍的選擇不是「越多越好」——必須根據<strong>客戶要求</strong>、
+  <strong>安全等級</strong>、<strong>組織成熟度</strong>三個因素綜合考量。</p>
+  <p>關鍵概念：<strong>「過程範圍」（Process Scope）的策略性選擇</strong>。
+  過多的 Process Area 會導致評鑑成本急劇上升（每個 Process Area 需要 1-2 個月的準備）；
+  過少的 Process Area 則無法滿足客戶和安全要求。最佳策略是「先聚焦、再擴展」——
+  選擇最關鍵的 5-8 個 Process Area 先達到目標等級，再逐步擴展。</p>
+
+  <h2>15.C 診斷式疑難排解表</h2>
+  <table>
+  <tr><th>症狀</th><th>可能原因</th><th>解決方案</th></tr>
+  <tr><td>評鑑範圍選擇不當</td><td>未充分了解客戶要求或安全要求</td><td>在合約談判階段明確 ASPICE 範圍，並與 ISO 26262 要求交叉檢查</td></tr>
+  <tr><td>評鑑成本超標</td><td>Process Area 過多，準備工作量大</td><td>分階段評鑑：第一階段先評核心 Process Area，第二階段再擴展</td></tr>
+  <tr><td>評鑑後無法維持</td><td>Process Area 過多，日常執行負擔重</td><td>將 Process Area 納入日常流程，避免「為評鑑而評鑑」</td></tr>
+  </table>
+
+  <h2>15.D 進階挑戰題</h2>
+  <ol>
+  <li>若 OEM 要求 SWE.1 ~ SWE.5 全部 CL3，Tier-1 應如何評估所需的準備時間與資源？</li>
+  <li>比較「一次評鑑所有 Process Area」與「分階段評鑑」的優缺點，各舉 3 個例子。</li>
+  <li>設計一個 ASPICE 評鑑範圍選擇的決策流程，涵蓋客戶要求、安全等級、組織成熟度三個因素。</li>
+  </ol>
+  </div>
+
 <div class="next-prev">
     <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
     <a class="np-next" href="unit-16.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 16 · 支持流程：SUP.8/SUP.9/SUP.10</div></a>

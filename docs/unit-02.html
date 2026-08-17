@@ -101,6 +101,58 @@
 <li>上一篇：<a href="unit-01.html">單元 1 · 概論</a>。</li><li>下一篇：<a href="unit-03.html">單元 3 · ASPICE 全景</a>。</li><li><a href="../standards.html">標準對照</a></li>
   </ul>
 
+  <div class="round1-deepen">
+  <h2>2.A 進階真實情境 Worked Example</h2>
+  <div class="demo-block"><div class="demo-label">進階範例：安全經理的日常——需求變更引發的安全影響分析</div><pre>
+情境：Tier-1 供應商在開發中期收到 OEM 的需求變更：
+  「增加自動泊車功能，車速 ≤ 10 km/h 時啟動。」
+
+安全經理的反應流程：
+┌─ Step 1：影響評估 ────────────────────────────────────────┐
+│ 原 HARA 結果：泊車場景 ASIL B（S1 × E2 × C2）            │
+│ 新增功能：低速自動轉向 + 環境感測融合                      │
+│ 重新 HARA：                                               │
+│   H-02 感測融合錯誤導致碰撞（S2 × E3 × C2）→ ASIL C       │
+│   H-03 泊車路徑規劃異常（S1 × E2 × C2）→ ASIL B           │
+│ 結論：新功能引入了 ASIL C 需求，需調整安全計畫。           │
+├─ Step 2：計畫調整 ────────────────────────────────────────┤
+│ 安全計畫更新內容：                                         │
+│   • 新增安全目標 SG-02：泊車期間感測融合偏差 ≤ 10cm       │
+│   • 安全分析（FMEA/FTA）重新執行                          │
+│   • 設計驗證計畫增加自動泊車路徑精度測試                   │
+│   • ASPICE SWE.1 追溯矩陣新增 12 條安全需求               │
+├─ Step 3：溝通與確認 ──────────────────────────────────────┤
+│ 安全經理需：                                               │
+│   • 通知 OEM 安全影響分析結果                              │
+│   • 更新 FMEA 表單並重新計算 RPN                          │
+│   • 確認 FTTI 在泊車場景（≤ 10 km/h）是否需要調整         │
+└────────────────────────────────────────────────────────────┘</pre></div>
+
+  <h2>2.B 深入原理擴充</h2>
+  <p>ISO 26262 Part 2 §6.4.3 明確定義<strong>「安全經理」（Safety Manager）</strong>的職責：
+  負責協調安全活動、追蹤安全計畫執行、管理安全相關文件變更。在 ASPICE 框架下，安全經理的角色
+  與 <strong>MAN.3 專案經理</strong>高度重疊——實務上常由同一人兼任，但需明確區分「專案管理」
+  與「安全管理」的職責邊界。</p>
+  <p>核心挑戰：<strong>需求變更管理</strong>。每當功能需求變更，安全經理必須評估：
+  ① 是否觸發新的 HARA 情境？② 現有安全機制是否足夠？③ ASIL 等級是否需要調整？
+  這個「安全影響分析」（Safety Impact Analysis）是 ISO 26262 Part 8 §9 的核心要求，
+  也是 ASPICE SWE.1 / SYS.2 的隱含要求。</p>
+
+  <h2>2.C 診斷式疑難排解表</h2>
+  <table>
+  <tr><th>症狀</th><th>可能原因</th><th>解決方案</th></tr>
+  <tr><td>安全計畫延誤，里程碑逾期</td><td>需求變更頻繁，HARA 反覆執行</td><td>建立變更凍結機制（Change Freeze），在關鍵里程碑前 4 週鎖定需求</td></tr>
+  <tr><td>安全影響分析結果與 OEM 認知不一致</td><td>HARA 假設條件未對齊</td><td>與 OEM 共享 HARA 假設清單，定期對齊場景定義與暴露度參數</td></tr>
+  </table>
+
+  <h2>2.D 進階挑戰題</h2>
+  <ol>
+  <li>撰寫一份安全經理的 RACI 矩陣（Responsible/Accountable/Consulted/Informed），涵蓋 HARA、安全設計、安全驗證三個階段。</li>
+  <li>若 OEM 在量產前 2 個月提出需求變更（增加後方碰撞預警），安全經理應如何評估？列出決策流程。</li>
+  <li>比較 ISO 26262 Part 2 與 ASPICE MAN.3 在「專案計畫」要求上的異同，找出至少 3 個重疊點與 2 個差異點。</li>
+  </ol>
+  </div>
+
 <div class="next-prev">
     <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
     <a class="np-next" href="unit-03.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 3 · ASPICE 全景：過程群組與能力等級</div></a>

@@ -100,6 +100,68 @@
 <li>上一篇：<a href="unit-08.html">單元 8 · SWE.1</a>。</li><li>下一篇：<a href="unit-10.html">單元 10 · SWE.3</a>。</li><li><a href="../glossary.html">術語表</a></li>
   </ul>
 
+  <div class="round1-deepen">
+  <h2>9.A 進階真實情境 Worked Example</h2>
+  <div class="demo-block"><div class="demo-label">進階範例：多 ASIL 等級混合的系統安全分析</div><pre>
+系統：進階駕駛輔助系統（ADAS）
+元件 ASIL 分配：
+  雷達模組：ASIL C
+  攝影機模組：ASIL B
+  融合控制器：ASIL D
+  顯示器（HMI）：ASIL A
+
+安全分析方法選擇：
+┌────────────────────────────────────────────────────────────┐
+│ 1. FMEA（Part 4 §7.4.4）：                               │
+│    目的：自下而上分析每個元件的故障模式                     │
+│    應用：雷達模組的單一故障分析                            │
+│    產出：FMEA 表格（含故障模式、影響、偵測率、RPN）       │
+│                                                           │
+│ 2. FTA（Part 4 §7.4.4）：                                │
+│    目的：自上而下分析頂端事件的因果鏈                       │
+│    應用：「AEB 誤觸發」的頂端事件分析                     │
+│    產出：FTA 邏輯樹（含 AND/OR 門、概率計算）             │
+│                                                           │
+│ 3. 安全矩陣分析（Part 9 §7）：                            │
+│    目的：識別 ASIL 分解後的獨立性要求                       │
+│    應用：融合控制器的冗餘通道分析                          │
+│    產出：安全矩陣（通道 A × 通道 B 的 ASIL 分配）         │
+│                                                           │
+│ 4. HAZOP（Part 9 §6）：                                   │
+│    目的：系統性識別偏離正常操作的危險                       │
+│    應用：感測器融合演算法的邊界條件分析                     │
+│    產出：HAZOP 工作表（含引導詞、偏離、原因、後果）       │
+└────────────────────────────────────────────────────────────┘
+
+多 ASIL 混合的關鍵挑戰：
+  • 通訊通道的 ASIL 等級：取最高 ASIL（ASIL D）
+  • 記憶體保護：按最高 ASIL（ASIL D）配置 MPU
+  • 時間分区：按最嚴格的 FTTI（融合控制器：50ms）設計</pre></div>
+
+  <h2>9.B 深入原理擴充</h2>
+  <p>ISO 26262 Part 9 §6-7 要求進行<strong>「安全分析」</strong>（Safety Analysis），
+  但未限定具體方法——FMEA、FTA、HAZOP、STPA 等均可接受。關鍵在於分析方法必須與
+  系統複雜度和 ASIL 等級匹配。</p>
+  <p>核心概念：<strong>「ASIL 等級继承」</strong>。當多個不同 ASIL 的元件共享通訊通道時，
+  通道的 ASIL 等級取最高值（Part 9 §5.4.3）。這是域控制器架構設計的關鍵約束——
+  低 ASIL 元件的故障可能影響高 ASIL 元件的通訊。</p>
+
+  <h2>9.C 診斷式疑難排解表</h2>
+  <table>
+  <tr><th>症狀</th><th>可能原因</th><th>解決方案</th></tr>
+  <tr><td>FMEA 結果與 FTA 結果不一致</td><td>分析角度不同（自下而上 vs 自上而下）</td><td>交叉驗證：FMEA 的高 RPN 項目必須在 FTA 中有對應的最小割集合</td></tr>
+  <tr><td>HAZOP 識別的危險場景過多</td><td>引導詞（Guide Word）設定過於寬泛</td><td>聚焦於安全關鍵場景，使用 ASIL 等級過濾低風險偏離</td></tr>
+  <tr><td>安全分析結果未更新到設計文件</td><td>安全分析與設計流程脫節</td><td>建立安全分析結果到設計文件的追溯機制，變更時同步更新</td></tr>
+  </table>
+
+  <h2>9.D 進階挑戰題</h2>
+  <ol>
+  <li>為 ADAS 系統的融合控制器撰寫完整的 FTA，頂端事件為「融合控制器輸出錯誤車速」。</li>
+  <li>若雷達模組（ASIL C）與攝影機模組（ASIL B）需要共享融合資料，設計通訊通道的 ASIL 等級分配方案。</li>
+  <li>比較 FMEA 與 STPA（Systems-Theoretic Process Analysis）的適用場景，各舉一例。</li>
+  </ol>
+  </div>
+
 <div class="next-prev">
     <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
     <a class="np-next" href="unit-10.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 10 · SWE.3 詳細設計與單元建置</div></a>

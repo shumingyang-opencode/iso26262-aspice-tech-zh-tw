@@ -108,6 +108,66 @@
 <li>上一篇：<a href="unit-15.html">單元 15 · 安全分析</a>。</li><li>下一篇：<a href="unit-17.html">單元 17 · QA 與管理</a>。</li><li><a href="../processes.html">過程速查</a></li>
   </ul>
 
+  <div class="round1-deepen">
+  <h2>16.A 進階真實情境 Worked Example</h2>
+  <div class="demo-block"><div class="demo-label">進階範例：ASPICE 評鑑中的「工具鑑定」（Tool Qualification）</div><pre>
+情境：使用 Polyspace 執行靜態分析（MISRA C:2012），需確認工具鑑定等級。
+
+┌─ 工具鑑定等級（TI/TO/TD）決策 ──────────────────────────┐
+│ ISO 26262 Part 8 §11 工具影響分析：                       │
+│                                                           │
+│ 工具：Polyspace Bug Finder + Code Prover                  │
+│ 用途：MISRA C:2012 合規檢查 + 程式碼驗證                  │
+│                                                           │
+│ TI（Tool Impact）分析：                                   │
+│   若 Polyspace 產生錯誤結果，是否影響安全？               │
+│   → 是（TI1）：Polyspace 的結果直接用於安全驗證          │
+│                                                           │
+│ TD（Tool Error Detection）分析：                          │
+│   開發過程能否偵測 Polyspace 的錯誤？                     │
+│   → 低（TD2）：人工審查難以發現靜態分析工具的誤判        │
+│                                                           │
+│ 工具鑑定等級 = TI1 × TD2 → TCL2                          │
+│                                                           │
+│ TCL2 要求：                                               │
+│   • 工具驗證報告（Validation Report）                     │
+│   • 工具使用規範（Usage Guidelines）                      │
+│   • 誤差率可接受性分析                                   │
+├─ 工具鑑定執行 ──────────────────────────────────────────┤
+│ 1. 取得 Polyspace 的工具驗證報告（Synopsys 提供）        │
+│ 2. 建立 Polyspace 使用規範：                              │
+│    • 版本鎖定：Polyspace R2023b                           │
+│    • 配置檔鎖定：MISRA C:2012_config.xml                  │
+│    • 分析流程：全量分析 → 手動審查 → 修正 → 再分析       │
+│ 3. 誤差率分析：                                           │
+│    • 虛假陽性率（False Positive）：≤ 5%                   │
+│    • 虛假陰性率（False Negative）：0%                     │
+│    • 人工審查可過濾所有虛假陽性                          │
+└────────────────────────────────────────────────────────────┘</pre></div>
+
+  <h2>16.B 深入原理擴充</h2>
+  <p>ISO 26262 Part 8 §11 要求對用於安全相關開發的工具進行<strong>「工具鑑定」</strong>。
+  工具鑑定等級取決於兩個維度：① 工具對開發過程的影響（TI）、② 開發過程能偵測工具錯誤的程度（TD）。</p>
+  <p>關鍵概念：<strong>「工具鑑定」vs「工具驗證」</strong>。
+  工具驗證（Tool Validation）是確認工具按規格運作；工具鑑定（Tool Qualification）是確認工具
+  在特定使用場景下的可靠性。即使工具通過驗證，若使用場景超出驗證範圍，仍需額外鑑定。</p>
+
+  <h2>16.C 診斷式疑難排解表</h2>
+  <table>
+  <tr><th>症狀</th><th>可能原因</th><th>解決方案</th></tr>
+  <tr><td>工具鑑定等級判斷錯誤</td><td>TI/TD 分析不準確</td><td>與評鑑師對齊 TI/TD 分析方法，並記錄分析過程</td></tr>
+  <tr><td>工具版本升級後鑑定失效</td><td>新版本的工具行為可能不同</td><td>版本升級時重新驗證工具鑑定，確保結果一致性</td></tr>
+  <tr><td>工具使用規範未被遵守</td><td>規範太嚴格，團隊不願遵守</td><td>簡化規範，僅保留關鍵約束，並建立自動化檢查機制</td></tr>
+  </table>
+
+  <h2>16.D 進階挑戰題</h2>
+  <ol>
+  <li>若使用 Jira 作為問題追蹤系統，其 TI/TD 等級如何判斷？進行完整分析。</li>
+  <li>比較 Polyspace 與 Coverity 在工具鑑定要求上的差異。</li>
+  <li>設計一個「工具鑑定管理流程」，涵蓋工具選擇、鑑定執行、版本升級三個階段。</li>
+  </ol>
+  </div>
+
 <div class="next-prev">
     <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
     <a class="np-next" href="unit-17.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 17 · 品質保證與管理：SUP.1/SUP.4/MAN.3/MAN.6</div></a>

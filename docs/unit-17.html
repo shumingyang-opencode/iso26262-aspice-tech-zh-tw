@@ -107,6 +107,65 @@ QA 不直接判定「平均 98% 所以可接受」，而是指出缺口是否涉
 <li>上一篇：<a href="unit-16.html">單元 16 · SUP.8-10</a>。</li><li>下一篇：<a href="unit-18.html">單元 18 · 功能安全流程管理</a>。</li><li><a href="../processes.html">過程速查</a></li>
   </ul>
 
+  <div class="round1-deepen">
+  <h2>17.A 進階真實情境 Worked Example</h2>
+  <div class="demo-block"><div class="demo-label">進階範例：ASPICE 與 ISO 26262 的「整合評鑑」策略</div><pre>
+專案目標：同時通過 ASPICE CL3 評鑑與 ISO 26262 符合性確認。
+
+┌─ 整合評鑑的優勢與挑戰 ──────────────────────────────────┐
+│ 優勢：                                                     │
+│   • 減少重複工作：ASPICE 的 SWE.1 ≈ ISO 26262 Part 6 §6 │
+│   • 統一評鑑時間：一次評鑑滿足兩個標準                    │
+│   • 統一客觀證據：同一份文件可滿足兩個標準的要求          │
+│                                                           │
+│ 挑戰：                                                     │
+│   • 評鑑師專業不同：ASPICE 評鑑師 vs ISO 26262 審核員    │
+│   • 評鑑方法不同：ASPICE 關注過程成熟度，ISO 26262 關注   │
+│     安全完整度                                             │
+│   • 文件要求不同：ASPICE 要求過程文件，ISO 26262 要求     │
+│     安全文件（Safety Case）                               │
+├─ 整合方案 ──────────────────────────────────────────────┤
+│ 1. 文件整合：                                              │
+│    • 過程文件：遵循 ASPICE 格式                           │
+│    • 安全文件：遵循 ISO 26262 格式                        │
+│    • 重疊部分：統一格式（如需求追溯矩陣）                 │
+│                                                           │
+│ 2. 評鑑流程整合：                                         │
+│    • Phase 1：ASPICE 評鑑（Process Assessment）           │
+│    • Phase 2：ISO 26262 審核（Safety Assessment）         │
+│    • 共享客觀證據                                         │
+│                                                           │
+│ 3. 人員整合：                                              │
+│    • 指定「整合評鑑協調人」（Assessment Coordinator）     │
+│    • 協調 ASPICE 評鑑師與 ISO 26262 審核員               │
+│    • 確保兩方需求同時滿足                                 │
+└────────────────────────────────────────────────────────────┘</pre></div>
+
+  <h2>17.B 深入原理擴充</h2>
+  <p>ISO 26262 與 ASPICE 在<strong>「過程要求」</strong>上有大量重疊——例如：
+  ISO 26262 Part 8 §7（變更管理）≈ ASPICE SUP.10；ISO 26262 Part 6 §6（軟體需求分析）
+  ≈ ASPICE SWE.1。整合評鑑可以利用這些重疊，減少重複工作。</p>
+  <p>關鍵概念：<strong>「整合評鑑」的時機選擇</strong>。
+  最佳時機是「概念階段結束後、系統設計開始前」——此時過程文件已建立，可以進行差距分析；
+  同時距量產還有足夠時間修正缺失。過早評鑑（如 CL1 階段）無法驗證過程成熟度；
+  過晚評鑑（如量產前）修正空間不足。</p>
+
+  <h2>17.C 診斷式疑難排解表</h2>
+  <table>
+  <tr><th>症狀</th><th>可能原因</th><th>解決方案</th></tr>
+  <tr><td>整合評鑑成本超標</td><td>評鑑範圍過大，同時評鑑過多 Process Area</td><td>分階段整合：先整合核心 Process Area，再逐步擴展</td></tr>
+  <tr><td>ASPICE 評鑑師與 ISO 26262 審核員意見衝突</td><td>兩方的評估標準不同</td><td>在評鑑前對齊評估標準，明確重疊區域的處理方式</td></tr>
+  <tr><td>整合評鑑後維持困難</td><td>兩套標準的維護工作量叠加</td><td>建立統一的過程維護機制，避免「雙軌並行」</td></tr>
+  </table>
+
+  <h2>17.D 進階挑戰題</h2>
+  <ol>
+  <li>比較 ISO 26262 Part 8 與 ASPICE 在「變更管理」（Change Management）上的異同。</li>
+  <li>若整合評鑑中 ASPICE 評鑑師判定 SWE.1 為 CL2，但 ISO 26262 審核員要求 CL3，應如何處理？</li>
+  <li>設計一個「整合評鑑計畫」，涵蓋評鑑範圍、時機、人員、文件四個面向。</li>
+  </ol>
+  </div>
+
 <div class="next-prev">
     <a href="index.html"><div class="np-label">← 上一層</div><div class="np-name">單元教學目錄</div></a>
     <a class="np-next" href="unit-18.html"><div class="np-label">下一篇 →</div><div class="np-name">單元 18 · 功能安全流程管理：Part 2/8</div></a>
